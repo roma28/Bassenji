@@ -9,6 +9,7 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 #include <iostream>
+#include <fstream>
 
 #include <Eigen/Core>
 #include <cxxopts.hpp>
@@ -16,7 +17,11 @@
 
 #include "xyz_grammar.h"
 #include <tao/pegtl/contrib/analyze.hpp>
+#include <tao/pegtl/contrib/parse_tree.hpp>
 #include <tao/pegtl.hpp>
+#include <tao/pegtl/contrib/trace.hpp>
+#include <tao/pegtl/contrib/parse_tree_to_dot.hpp>
+
 
 int main(int argc, char *argv[]) {
   cxxopts::Options opt("Bassenji", "A MD-based conformer generator");
@@ -38,10 +43,25 @@ int main(int argc, char *argv[]) {
     spdlog::warn("Unknown argument received {}", unknown_arg);
   }
 
-  using grammar = tao::pegtl::must<xyz_file>;
+  using grammar = xyzParser::grammar::xyz_file;
 
-  if( pegtl::analyze< grammar >() != 0 ) {
+  if( tao::pegtl::analyze< grammar >() != 0 ) {
      spdlog::error("cycles without progress detected!");
     return 1;
   }
+  else{
+    spdlog::debug("XYZ grammar is correct");
+  }
+
+  auto in = tao::pegtl::file_input<>(options["input"].as<std::string>());
+  tao::pegtl::standard_trace< grammar >( in );
+//  auto root = tao::pegtl::parse_tree::parse<grammar>(in);
+  spdlog::debug("Parsing done");
+
+//  if(root)
+//  {
+//    std::ofstream dot_file;
+//    dot_file.open("parsing_tree.dot");
+//    tao::pegtl::parse_tree::print_dot(dot_file, *root);
+//  }
 }

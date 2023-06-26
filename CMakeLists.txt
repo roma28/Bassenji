@@ -10,4 +10,4 @@ include_directories(thirdparty/lexy/include)
 include_directories(thirdparty/PEGTL-3.2.7/include)
 
 #add_library(XYZParser src/XYZParser.cpp)
-add_executable(MDConfGen src/main.cpp)
+add_executable(MDConfGen src/main.cpp src/Atom.cpp src/Molecule.cpp src/Molecule.h)
