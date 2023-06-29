@@ -1,10 +1,22 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+//
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+//
+// Copyright 2023 Roman Ishchenko
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+//
+//
+
 #ifndef BASSENJI_SRC_ATOM_H_
 #define BASSENJI_SRC_ATOM_H_
 
 #include <unordered_map>
 
-#include <Eigen/Core>
-#include <spdlog/spdlog.h>
+#include "Eigen/Core"
+#include "spdlog/spdlog.h"
 
 namespace atom_utilities {
 
@@ -193,7 +205,7 @@ const static std::unordered_map<uint8_t, std::string> number_to_name = {
     {89, "Ac"},
     {90, "Th"}
 };
-const static std::unordered_map<std::string, uint8_t> name_to_number = {
+static std::unordered_map<std::string, uint8_t> name_to_number = {
     {"H", 1},
     {"He", 2},
     {"Li", 3},
@@ -201,8 +213,8 @@ const static std::unordered_map<std::string, uint8_t> name_to_number = {
     {"B", 5},
     {"C", 6},
     {"N", 7},
-    {"{O", 8},
-    {"{F", 9},
+    {"O", 8},
+    {"F", 9},
     {"Ne", 10},
     {"Na", 11},
     {"Mg", 12},
@@ -294,6 +306,10 @@ class Atom {
   std::string atom_symbol;
 
  public:
+  Atom() = default;
+
+  Atom(std::string symbol);
+
   Atom(std::string symbol, double x, double y, double z);
 
   Eigen::Vector3d coordinates;
@@ -301,6 +317,8 @@ class Atom {
   float getMass() {
     return this->atom_mass;
   }
+
+  void set_symbol(const std::string &s);
 };
 
 #endif //BASSENJI_SRC_ATOM_H_

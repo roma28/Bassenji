@@ -1,12 +1,14 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+//
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+//
 // Copyright 2023 Roman Ishchenko
 //
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 //
-// This is a personal academic project. Dear PVS-Studio, please check it.
 //
-// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 #include <iostream>
 #include <fstream>
@@ -15,7 +17,7 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 
-#include "xyz_grammar.h"
+#include "parsers/grammar/xyz_grammar.h"
 #include <tao/pegtl/contrib/analyze.hpp>
 #include <tao/pegtl/contrib/parse_tree.hpp>
 #include <tao/pegtl.hpp>
@@ -43,25 +45,9 @@ int main(int argc, char *argv[]) {
     spdlog::warn("Unknown argument received {}", unknown_arg);
   }
 
-  using grammar = xyzParser::grammar::xyz_file;
-
-  if( tao::pegtl::analyze< grammar >() != 0 ) {
-     spdlog::error("cycles without progress detected!");
-    return 1;
-  }
-  else{
-    spdlog::debug("XYZ grammar is correct");
-  }
-
   auto in = tao::pegtl::file_input<>(options["input"].as<std::string>());
-  tao::pegtl::standard_trace< grammar >( in );
-//  auto root = tao::pegtl::parse_tree::parse<grammar>(in);
+  TrajectoryBuilder tb = TrajectoryBuilder();
+  tao::pegtl::parse<grammar::xyz_file, grammar::xyz_action>(in, tb);
   spdlog::debug("Parsing done");
 
-//  if(root)
-//  {
-//    std::ofstream dot_file;
-//    dot_file.open("parsing_tree.dot");
-//    tao::pegtl::parse_tree::print_dot(dot_file, *root);
-//  }
 }
