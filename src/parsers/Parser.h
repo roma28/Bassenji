@@ -18,9 +18,9 @@
 namespace parsers {
 
 class Parser {
- public:
-  Parser() = default;
-  virtual Trajectory* parse(std::string file);
+public:
+    Parser() = default;
+    virtual Trajectory* parse(std::string file);
 };
 
 } // parsers

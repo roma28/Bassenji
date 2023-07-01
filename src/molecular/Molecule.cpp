@@ -1,6 +1,6 @@
-// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 //
-// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 //
 // Copyright 2023 Roman Ishchenko
 //
@@ -11,14 +11,24 @@
 //
 
 #include "Molecule.h"
-Eigen::Vector3d Molecule::centerOfMass() {
-  Eigen::Vector3d c = {0, 0, 0};
-  float total_mass = 0;
-
-  for (Atom *a : this->atoms) {
-    c += a->coordinates * a->getMass();
-    total_mass += a->getMass();
-  }
-
-  return c/total_mass;
+Eigen::Vector3d Molecule::Centroid()
+{
+    if (this->recalc_centroid) {
+        Eigen::Vector3d c = {0, 0, 0};
+        float total_mass = 0;
+        for (Atom* a : this->atoms) {
+            c += a->coordinates*a->getMass();
+            total_mass += a->getMass();
+        }
+        this->_centroid = c/total_mass;
+        this->recalc_centroid = false;
+    }
+    return this->_centroid;
 }
+Molecule::~Molecule()
+{
+    for (auto a : this->atoms) {
+        delete a;
+    }
+}
+

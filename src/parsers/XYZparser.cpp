@@ -13,13 +13,14 @@
 #include "tao/pegtl/contrib/parse_tree.hpp"
 
 namespace parsers {
-Trajectory * XYZparser::parse(std::string fname) {
-  auto in = tao::pegtl::file_input<>(fname);
-  auto root = tao::pegtl::parse_tree::parse<grammar::xyz_file>(in);
-  spdlog::debug("Parsing done");
+Trajectory* XYZparser::parse(std::string fname)
+{
+    auto in = tao::pegtl::file_input<>(fname);
+    auto root = tao::pegtl::parse_tree::parse<grammar::xyz_file>(in);
+    spdlog::debug("Parsing done");
 
 //  root->children.
-  return NULL;
+    return NULL;
 }
 }
 

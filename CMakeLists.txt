@@ -10,4 +10,4 @@ include_directories(thirdparty/eigen)
 include_directories(thirdparty/PEGTL-3.2.7/include)
 
 add_executable(MDConfGen src/main.cpp src/molecular/Atom.cpp src/molecular/Molecule.cpp src/molecular/Residiue.cpp
-        src/molecular/Trajectory.cpp src/molecular/Frame.cpp src/molecular/TrajectoryBuilder.cpp)
+        src/molecular/Trajectory.cpp src/molecular/Frame.cpp src/molecular/TrajectoryBuilder.cpp src/calculations/RMSDTrajectoryProcessor.cpp src/calculations/RMSDTrajectoryProcessor.h)

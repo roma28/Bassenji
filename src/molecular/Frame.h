@@ -1,6 +1,6 @@
-// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 //
-// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 //
 // Copyright 2023 Roman Ishchenko
 //
@@ -18,9 +18,10 @@
 #include "Molecule.h"
 
 class Frame {
- public:
-  std::vector<Molecule*> molecules;
-  Frame() = default;
+public:
+    std::vector<Molecule*> molecules;
+    Frame() = default;
+    ~Frame();
 };
 
 #endif //BASSENJI_SRC_MOLECULAR_FRAME_H_

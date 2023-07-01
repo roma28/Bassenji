@@ -1,6 +1,6 @@
-// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 //
-// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 //
 // Copyright 2023 Roman Ishchenko
 //
@@ -16,27 +16,27 @@
 #include "Trajectory.h"
 class TrajectoryBuilder {
 
-  Trajectory *trajectory;
-  Molecule *current_molecule;
-  Frame *current_frame;
-  Atom *current_atom;
-  uint8_t current_coordinate = 0;
+    Trajectory* trajectory;
+    Molecule* current_molecule;
+    Frame* current_frame;
+    Atom* current_atom;
+    uint8_t current_coordinate = 0;
 
- public:
+public:
 
-  TrajectoryBuilder();
+    TrajectoryBuilder();
 
-  Trajectory *GetTrajectory();
+    Trajectory* GetTrajectory();
 
-  void NewFrame();
+    void NewFrame();
 
-  void NewMolecule();
+    void NewMolecule();
 
-  void NewAtom();
+    void NewAtom();
 
-  void SetCurrentCoordinate(double c);
+    void SetCurrentCoordinate(double c);
 
-  void SetCurrentAtom(const std::string s);
+    void SetCurrentAtom(const std::string& s);
 };
 
 #endif //BASSENJI_SRC_MOLECULAR_TRAJECTORYBUILDER_H_

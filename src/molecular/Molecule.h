@@ -1,6 +1,6 @@
-// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 //
-// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 //
 // Copyright 2023 Roman Ishchenko
 //
@@ -20,12 +20,17 @@
 #include "Atom.h"
 
 class Molecule {
- public:
-  Molecule() = default;
+    Eigen::Vector3d _centroid;
+    bool recalc_centroid = true;
 
-  std::vector<Atom*> atoms;
+public:
+    Molecule() = default;
 
-  Eigen::Vector3d centerOfMass();
+    ~Molecule();
+
+    std::vector<Atom*> atoms;
+
+    Eigen::Vector3d Centroid();
 };
 
 #endif //BASSENJI_SRC_MOLECULE_H_

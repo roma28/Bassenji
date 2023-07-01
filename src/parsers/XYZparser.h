@@ -14,8 +14,8 @@
 #include "Parser.h"
 namespace parsers {
 class XYZparser : Parser {
-  XYZparser() = default;
-  Trajectory * parse(std::string fname);
+    XYZparser() = default;
+    Trajectory* parse(std::string fname);
 };
 }
 #endif //BASSENJI_SRC_XYZPARSER_H_
