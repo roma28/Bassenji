@@ -10,7 +10,7 @@
 //
 //
 
-#include "TrajectoryBuilder.h"
+#include "include/TrajectoryBuilder.h"
 
 TrajectoryBuilder::TrajectoryBuilder()
 {

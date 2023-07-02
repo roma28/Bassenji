@@ -12,10 +12,11 @@
 
 #ifndef BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_
 #define BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_
-#include "../molecular/Trajectory.h"
+#include "../molecular/include/Trajectory.h"
+#include "TrajectoryProcessor.h"
 
-class RMSDTrajectoryProcessor {
-    static double rmsd(Molecule& A, Molecule& B);
+class RMSDTrajectoryProcessor : TrajectoryProcessor {
+    static double rmsd(const Molecule& A, const Molecule& B);
     static double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
     static Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
 
@@ -24,8 +25,10 @@ class RMSDTrajectoryProcessor {
 
 public:
     RMSDTrajectoryProcessor(double threshold);
-    void Process(Trajectory& trajectory);
-    std::vector<std::pair<Molecule*, uint32_t>> GetUniques();
+
+    void Process(const Trajectory& trajectory);
+
+    std::vector<std::pair<Molecule*, double>> GetUniques() const;
 };
 
 #endif //BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_

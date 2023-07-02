@@ -17,10 +17,8 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 
-#include "parsers/grammar/xyz_grammar.h"
-#include "parsers/grammar/pdb_grammar.h"
+#include "IO/readers/XYZFileReader.h"
 #include "calculations/RMSDTrajectoryProcessor.h"
-
 
 #include <tao/pegtl/contrib/analyze.hpp>
 #include <tao/pegtl/contrib/parse_tree.hpp>
@@ -56,19 +54,12 @@ int main(int argc, char* argv[])
 {
     cxxopts::ParseResult options = parse_arguments(argc, argv);
 
-    auto in = tao::pegtl::file_input<>(options["input"].as<std::string>());
-    if (options["trace-parsing"].as<bool>()) {
-        tao::pegtl::standard_trace<grammar::xyz_file>(in);
-        spdlog::debug("Tracing done");
-    }
-    else {
-        TrajectoryBuilder tb = TrajectoryBuilder();
-        tao::pegtl::parse<grammar::xyz_file, grammar::xyz_action>(in, tb);
-        spdlog::debug("Parsing done: {0} frames in trajectory", tb.GetTrajectory()->frames.size());
+    FileReader* r = new XYZFileReader();
+    Trajectory* traj = r->ReadFile(options["input"].as<std::string>());
+    spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
-        RMSDTrajectoryProcessor p(0.125);
-        p.Process(*tb.GetTrajectory());
-        spdlog::debug("{0} uniques found", p.GetUniques().size());
-    }
-
+    RMSDTrajectoryProcessor p(0.125);
+    p.Process(*traj);
+    spdlog::debug("{0} uniques found", p.GetUniques().size());
 }
+

@@ -8,19 +8,17 @@
 //
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
-#include "XYZparser.h"
+#include "XYZFileReader.h"
 #include "grammar/xyz_grammar.h"
-#include "tao/pegtl/contrib/parse_tree.hpp"
 
-namespace parsers {
-Trajectory* XYZparser::parse(std::string fname)
+Trajectory* XYZFileReader::ReadFile(const std::string& fname)
 {
     auto in = tao::pegtl::file_input<>(fname);
-    auto root = tao::pegtl::parse_tree::parse<grammar::xyz_file>(in);
+    TrajectoryBuilder tb = TrajectoryBuilder();
+    spdlog::debug("Starting to parse XYZ file {0}", fname);
+    tao::pegtl::parse<xyz_file, xyz_action>(in, tb);
     spdlog::debug("Parsing done");
 
-//  root->children.
-    return NULL;
-}
+    return tb.GetTrajectory();
 }
 

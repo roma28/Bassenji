@@ -10,7 +10,7 @@
 //
 //
 
-#include "Atom.h"
+#include "include/Atom.h"
 
 Atom::Atom(const std::string& s)
 {

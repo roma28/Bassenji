@@ -23,6 +23,8 @@ class Molecule {
 public:
     Molecule() = default;
 
+    Molecule(const Molecule& m);
+
     ~Molecule();
 
     std::vector<Atom*> atoms;

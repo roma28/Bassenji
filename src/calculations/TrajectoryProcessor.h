@@ -10,4 +10,16 @@
 //
 //
 
-#include "include/Residiue.h"
+#ifndef BASSENJI_TRAJECTORYPROCESSOR_H
+#define BASSENJI_TRAJECTORYPROCESSOR_H
+
+#include "../molecular/include/Trajectory.h"
+class TrajectoryProcessor {
+
+public:
+    virtual void Process(const Trajectory& trajectory) = 0;
+
+    virtual std::vector<std::pair<Molecule*, double>> GetUniques() const = 0;
+};
+
+#endif //BASSENJI_TRAJECTORYPROCESSOR_H

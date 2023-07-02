@@ -316,7 +316,7 @@ public:
 
     Eigen::Vector3d coordinates;
 
-    const float getMass()
+    float getMass() const
     {
         return this->atom_mass;
     }

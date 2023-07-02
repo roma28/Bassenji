@@ -12,12 +12,11 @@
 
 #ifndef BASSENJI_SRC_XYZ_GRAMMAR_H_
 #define BASSENJI_SRC_XYZ_GRAMMAR_H_
-#include <tao/pegtl.hpp>
-#include <spdlog/spdlog.h>
+#include "tao/pegtl.hpp"
+#include "spdlog/spdlog.h"
 
-#include "../../molecular/TrajectoryBuilder.h"
+#include "../../../molecular/include/TrajectoryBuilder.h"
 
-namespace grammar {
 namespace pegtl = tao::pegtl;
 
 struct atom_symbol : pegtl::rep_min_max<1, 2, pegtl::alpha> { };
@@ -66,26 +65,16 @@ struct xyz_action<xyz_frame_header> {
   template<typename ActionInput>
   static void apply(const ActionInput& in, TrajectoryBuilder& tb)
   {
-      spdlog::trace("Starting new frame");
       tb.NewFrame();
       tb.NewMolecule();
   }
 };
-
-//template<>
-//struct xyz_action<xyz_line> {
-//  template<typename ActionInput>
-//  static void apply(const ActionInput &in, TrajectoryBuilder &tb) {
-//    spdlog::trace("Starting new atom");
-//  }
-//};
 
 template<>
 struct xyz_action<atom_symbol> {
   template<typename ActionInput>
   static void apply(const ActionInput& in, TrajectoryBuilder& tb)
   {
-      spdlog::trace("Setting atom symbol {0}", in.string());
       tb.NewAtom();
       tb.SetCurrentAtom(in.string());
   }
@@ -96,9 +85,8 @@ struct xyz_action<coordinate> {
   template<typename ActionInput>
   static void apply(const ActionInput& in, TrajectoryBuilder& tb)
   {
-      spdlog::trace("Setting atom coordinate {0}", in.string());
       tb.SetCurrentCoordinate(std::stod(in.string()));
   }
 };
-}
+
 #endif //BASSENJI_SRC_XYZ_GRAMMAR_H_

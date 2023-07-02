@@ -10,7 +10,7 @@
 //
 //
 
-#include "Trajectory.h"
+#include "include/Trajectory.h"
 
 Trajectory::~Trajectory()
 {

@@ -8,14 +8,17 @@
 //
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
-#ifndef BASSENJI_SRC_XYZPARSER_H_
-#define BASSENJI_SRC_XYZPARSER_H_
+#ifndef BASSENJI_SRC_PARSER_H_
+#define BASSENJI_SRC_PARSER_H_
 
-#include "Parser.h"
-namespace parsers {
-class XYZparser : Parser {
-    XYZparser() = default;
-    Trajectory* parse(std::string fname);
+#include <fstream>
+
+#include "../../molecular/include/Trajectory.h"
+
+class FileReader {
+public:
+    FileReader() = default;
+    virtual Trajectory* ReadFile(const std::string& fname) = 0;
 };
-}
-#endif //BASSENJI_SRC_XYZPARSER_H_
+
+#endif //BASSENJI_SRC_PARSER_H_

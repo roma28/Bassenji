@@ -10,7 +10,7 @@
 //
 //
 
-#include "Molecule.h"
+#include "include/Molecule.h"
 Eigen::Vector3d Molecule::Centroid() const
 {
     Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);
@@ -26,6 +26,12 @@ Molecule::~Molecule()
 {
     for (auto a : this->atoms) {
         delete a;
+    }
+}
+Molecule::Molecule(const Molecule& m)
+{
+    for (auto a : m.atoms) {
+        this->atoms.push_back(new Atom(*a));
     }
 }
 
