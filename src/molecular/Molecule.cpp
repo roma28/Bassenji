@@ -11,20 +11,17 @@
 //
 
 #include "Molecule.h"
-Eigen::Vector3d Molecule::Centroid()
+Eigen::Vector3d Molecule::Centroid() const
 {
-    if (this->recalc_centroid) {
-        Eigen::Vector3d c = {0, 0, 0};
-        float total_mass = 0;
-        for (Atom* a : this->atoms) {
-            c += a->coordinates*a->getMass();
-            total_mass += a->getMass();
-        }
-        this->_centroid = c/total_mass;
-        this->recalc_centroid = false;
+    Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);
+    double total_mass = 0;
+    for (size_t i = 0; i<this->atoms.size(); ++i) {
+        m.row(i) = this->atoms[i]->coordinates*this->atoms[i]->getMass();
+        total_mass += this->atoms[i]->getMass();
     }
-    return this->_centroid;
+    return m.colwise().sum()/total_mass;
 }
+
 Molecule::~Molecule()
 {
     for (auto a : this->atoms) {

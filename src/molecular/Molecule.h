@@ -20,9 +20,6 @@
 #include "Atom.h"
 
 class Molecule {
-    Eigen::Vector3d _centroid;
-    bool recalc_centroid = true;
-
 public:
     Molecule() = default;
 
@@ -30,7 +27,7 @@ public:
 
     std::vector<Atom*> atoms;
 
-    Eigen::Vector3d Centroid();
+    Eigen::Vector3d Centroid() const;
 };
 
 #endif //BASSENJI_SRC_MOLECULE_H_
