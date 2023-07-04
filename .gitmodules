@@ -1,9 +1,0 @@
-[submodule "thirdparty/spdlog"]
-	path = thirdparty/spdlog
-	url = https://github.com/gabime/spdlog.git
-[submodule "thirdparty/cxxoptions"]
-	path = thirdparty/cxxoptions
-	url = https://github.com/jarro2783/cxxopts.git
-[submodule "thirdparty/eigen"]
-	path = thirdparty/eigen
-	url = https://gitlab.com/libeigen/eigen.git

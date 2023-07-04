@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.24)
 project(Bassenji)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall -O0")
 
-include_directories(thirdparty/spdlog/include)
-include_directories(thirdparty/cxxoptions/include)
-include_directories(thirdparty/eigen)
-include_directories(thirdparty/PEGTL-3.2.7/include)
+find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
+find_package(pegtl CONFIG REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 
 add_executable(MDConfGen src/main.cpp src/molecular/Atom.cpp src/molecular/Molecule.cpp src/molecular/Residiue.cpp
         src/molecular/Trajectory.cpp src/molecular/Frame.cpp src/molecular/TrajectoryBuilder.cpp
-        src/calculations/RMSDTrajectoryProcessor.cpp src/IO/readers/XYZFileReader.cpp)
+        src/calculations/RMSDTrajectoryProcessor.cpp src/IO/readers/XYZFileReader.cpp src/IO/writers/XYZFileWriter.cpp src/IO/writers/XYZFileWriter.h)
+
+target_link_libraries(MDConfGen PRIVATE fmt::fmt)
+target_link_libraries(MDConfGen PRIVATE spdlog::spdlog)
+target_link_libraries(MDConfGen PRIVATE Eigen3::Eigen)
+target_link_libraries(MDConfGen PRIVATE cxxopts::cxxopts)
