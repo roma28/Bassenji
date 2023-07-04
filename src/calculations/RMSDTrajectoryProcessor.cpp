@@ -26,7 +26,8 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory)
                 this->uniques.emplace_back(m, 1);
                 continue;
             }
-            for (size_t i = 0; i<this->uniques.size(); ++i) {
+            size_t n_uniques = this->uniques.size();
+            for (size_t i = 0; i<n_uniques; ++i) {
                 if (rmsd(*m, *(this->uniques[i].first))<rmsd_threshold) {
                     this->uniques[i].second++;
                 }
