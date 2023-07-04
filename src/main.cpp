@@ -12,19 +12,12 @@
 
 #include <iostream>
 #include <fstream>
-
-#include <Eigen/Core>
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 
-#include "IO/readers/XYZFileReader.h"
+#include "IO/ReaderFactory.h"
+#include "IO/WriterFactory.h"
 #include "calculations/RMSDTrajectoryProcessor.h"
-
-#include <tao/pegtl/contrib/analyze.hpp>
-#include <tao/pegtl/contrib/parse_tree.hpp>
-#include <tao/pegtl.hpp>
-#include <tao/pegtl/contrib/trace.hpp>
-#include <tao/pegtl/contrib/parse_tree_to_dot.hpp>
 
 cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 {
@@ -54,12 +47,15 @@ int main(int argc, char* argv[])
 {
     cxxopts::ParseResult options = parse_arguments(argc, argv);
 
-    FileReader* r = new XYZFileReader();
+    FileReader* r = ReaderFactory::GetReader("");
     Trajectory* traj = r->ReadFile(options["input"].as<std::string>());
     spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
     RMSDTrajectoryProcessor p(0.125);
     p.Process(*traj);
     spdlog::debug("{0} uniques found", p.GetUniques().size());
+
+    FileWriter* w = WriterFactory::GetWriter("");
+    w->WriteFile(p.GetUniques(), options["output"].as<std::string>());
 }
 

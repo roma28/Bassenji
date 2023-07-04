@@ -9,9 +9,12 @@ find_package(Eigen3 CONFIG REQUIRED)
 find_package(pegtl CONFIG REQUIRED)
 find_package(cxxopts CONFIG REQUIRED)
 
-add_executable(MDConfGen src/main.cpp src/molecular/Atom.cpp src/molecular/Molecule.cpp src/molecular/Residiue.cpp
-        src/molecular/Trajectory.cpp src/molecular/Frame.cpp src/molecular/TrajectoryBuilder.cpp
-        src/calculations/RMSDTrajectoryProcessor.cpp src/IO/readers/XYZFileReader.cpp src/IO/writers/XYZFileWriter.cpp src/IO/writers/XYZFileWriter.h)
+add_executable(MDConfGen src/main.cpp
+        src/molecular/Atom.cpp src/molecular/Molecule.cpp src/molecular/Residiue.cpp src/molecular/Frame.cpp
+        src/molecular/Trajectory.cpp  src/molecular/TrajectoryBuilder.cpp
+        src/calculations/RMSDTrajectoryProcessor.cpp
+        src/IO/readers/XYZFileReader.cpp src/IO/writers/XYZFileWriter.cpp
+        src/IO/ReaderFactory.cpp src/IO/WriterFactory.cpp)
 
 target_link_libraries(MDConfGen PRIVATE fmt::fmt)
 target_link_libraries(MDConfGen PRIVATE spdlog::spdlog)

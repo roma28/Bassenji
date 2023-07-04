@@ -65,7 +65,8 @@ Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::Ma
 {
     auto H = P.transpose()*Q;
 
-    Eigen::JacobiSVD<Eigen::MatrixX3d, Eigen::ComputeFullU | Eigen::ComputeFullV> svd(H);
+    Eigen::JacobiSVD<Eigen::MatrixX3d> svd;
+    svd.compute(H, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
     int8_t d = svd.matrixV().determinant()*svd.matrixU().determinant()>0 ? 1 : -1;
 
@@ -91,14 +92,14 @@ std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() 
     double population_sum = std::accumulate(this->uniques.begin(), this->uniques.end(), 0.0,
             [](double previous, auto item) { return previous+item.second; });
 
-    for (auto p : this->uniques) {
+    for (const auto p : this->uniques) {
         Molecule* m = new Molecule(*p.first);
         Eigen::Vector3d mCentroid = m->Centroid();
         for (auto a : m->atoms) {
             a->coordinates -= mCentroid;
         }
         u.emplace_back(p.first, p.second/population_sum);
-    }
+    } //-V773
 
     return u;
 }

@@ -16,8 +16,8 @@ Eigen::Vector3d Molecule::Centroid() const
     Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);
     double total_mass = 0;
     for (size_t i = 0; i<this->atoms.size(); ++i) {
-        m.row(i) = this->atoms[i]->coordinates*this->atoms[i]->getMass();
-        total_mass += this->atoms[i]->getMass();
+        m.row(i) = this->atoms[i]->coordinates*this->atoms[i]->GetMass();
+        total_mass += this->atoms[i]->GetMass();
     }
     return m.colwise().sum()/total_mass;
 }

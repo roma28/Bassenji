@@ -316,9 +316,13 @@ public:
 
     Eigen::Vector3d coordinates;
 
-    float getMass() const
+    float GetMass() const
     {
         return this->atom_mass;
+    }
+
+    std::string GetSymbol() const {
+        return this->atom_symbol;
     }
 
     void set_symbol(const std::string& s);
