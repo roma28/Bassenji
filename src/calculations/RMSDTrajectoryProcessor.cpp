@@ -20,22 +20,32 @@
 
 void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory)
 {
+    size_t frames_processed = 1;
     for (auto f : trajectory.frames) {
+        spdlog::trace("Processing frame {0} out of {1}", frames_processed, trajectory.frames.size());
         for (auto m : f->molecules) {
-            if (this->uniques.empty()) {
-                this->uniques.emplace_back(m, 1);
+
+            // If no unique conformers the first one is automatically unique
+            if (uniques.empty()) {
+                uniques.emplace_back(m, 1);
                 continue;
             }
+
             size_t n_uniques = this->uniques.size();
+            spdlog::trace("Comparing against {0} uniques", n_uniques);
+            bool is_unique = true;
+
             for (size_t i = 0; i<n_uniques; ++i) {
-                if (rmsd(*m, *(this->uniques[i].first))<rmsd_threshold) {
-                    this->uniques[i].second++;
-                }
-                else {
-                    this->uniques.emplace_back(m, 1);
+                if (rmsd(*m, *(uniques[i].first))<rmsd_threshold) {
+                    uniques[i].second++;
+                    is_unique = false;
                 }
             }
+            if (is_unique) {
+                uniques.emplace_back(m, 1);
+            }
         }
+        frames_processed++;
     }
 }
 
