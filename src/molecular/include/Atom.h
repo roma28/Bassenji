@@ -321,7 +321,8 @@ public:
         return this->atom_mass;
     }
 
-    std::string GetSymbol() const {
+    std::string GetSymbol() const
+    {
         return this->atom_symbol;
     }
 

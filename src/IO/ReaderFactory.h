@@ -3,8 +3,7 @@
 
 #include "readers/FileReader.h"
 
-class ReaderFactory
-{
+class ReaderFactory {
     ReaderFactory();
 public:
     static FileReader* GetReader(const std::string& specifier);

@@ -5,7 +5,7 @@
 
 class FileWriter {
 public:
-     virtual void WriteFile(const
+    virtual void WriteFile(const
     std::vector<std::pair<Molecule*, double>>& ensemble, const std::string& fname) const = 0;
 };
 

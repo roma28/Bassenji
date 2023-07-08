@@ -16,19 +16,21 @@
 #include "TrajectoryProcessor.h"
 
 class RMSDTrajectoryProcessor : TrajectoryProcessor {
-    static double rmsd(const Molecule& A, const Molecule& B);
-    static double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
-    static Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
+protected:
+    double rmsd(const Molecule* A, const Molecule* B) const;
+    double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const;
+    Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const;
 
     double rmsd_threshold;
     std::vector<std::pair<Molecule*, uint32_t>> uniques;
+    std::shared_ptr<spdlog::logger> logger;
 
 public:
     RMSDTrajectoryProcessor(double threshold);
 
-    void Process(const Trajectory& trajectory);
+    void Process(const Trajectory* trajectory) override;
 
-    std::vector<std::pair<Molecule*, double>> GetUniques() const;
+    std::vector<std::pair<Molecule*, double>> GetUniques() const override;
 };
 
 #endif //BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_

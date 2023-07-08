@@ -17,7 +17,7 @@
 class TrajectoryProcessor {
 
 public:
-    virtual void Process(const Trajectory& trajectory) = 0;
+    virtual void Process(const Trajectory* trajectory) = 0;
 
     virtual std::vector<std::pair<Molecule*, double>> GetUniques() const = 0;
 };

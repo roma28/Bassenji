@@ -11,13 +11,15 @@
 //
 
 #include "include/TrajectoryBuilder.h"
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 TrajectoryBuilder::TrajectoryBuilder()
 {
-    spdlog::trace("Starting trajectory builder");
+    this->logger = spdlog::stdout_color_st("TrajectoryBuilder");
+    this->logger->debug("Trajectory builder started");
     this->trajectory = new Trajectory();
-//  this->NewFrame();
 }
+
 Trajectory* TrajectoryBuilder::GetTrajectory()
 {
     return this->trajectory;
@@ -25,25 +27,23 @@ Trajectory* TrajectoryBuilder::GetTrajectory()
 
 void TrajectoryBuilder::NewFrame()
 {
-    spdlog::trace("trajectory builder new frame");
+    this->logger->trace("New frame");
     auto f = new Frame();
     this->trajectory->frames.push_back(f);
     this->current_frame = f;
-//  this->NewMolecule();
 }
 
 void TrajectoryBuilder::NewMolecule()
 {
-    spdlog::trace("trajectory builder new molecule");
+    this->logger->trace("New molecule");
     auto m = new Molecule();
     this->current_frame->molecules.push_back(m);
     this->current_molecule = m;
-//  NewAtom();
 }
 
 void TrajectoryBuilder::NewAtom()
 {
-    spdlog::trace("trajectory builder new atom");
+    this->logger->trace("New atom");
     auto a = new Atom();
     this->current_molecule->atoms.push_back(a);
     this->current_atom = a;
@@ -52,11 +52,13 @@ void TrajectoryBuilder::NewAtom()
 
 void TrajectoryBuilder::SetCurrentAtom(const std::string& s)
 {
+    this->logger->trace("Setting current atom to {0}", s);
     this->current_atom->set_symbol(s);
 }
 
 void TrajectoryBuilder::SetCurrentCoordinate(double c)
 {
+    this->logger->trace("Setting current coordinate {0} to {1}", current_coordinate, c);
     this->current_atom->coordinates[this->current_coordinate] = c;
     this->current_coordinate++;
 }

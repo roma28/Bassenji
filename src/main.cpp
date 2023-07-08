@@ -14,6 +14,7 @@
 #include <fstream>
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
+#include <spdlog/cfg/env.h>
 
 #include "IO/ReaderFactory.h"
 #include "IO/WriterFactory.h"
@@ -46,13 +47,14 @@ cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 int main(int argc, char* argv[])
 {
     cxxopts::ParseResult options = parse_arguments(argc, argv);
+    spdlog::cfg::load_env_levels();
 
     FileReader* r = ReaderFactory::GetReader("");
     Trajectory* traj = r->ReadFile(options["input"].as<std::string>());
     spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
     RMSDTrajectoryProcessor p(0.125);
-    p.Process(*traj);
+    p.Process(traj);
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
     FileWriter* w = WriterFactory::GetWriter("");

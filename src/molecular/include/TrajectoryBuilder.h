@@ -21,6 +21,7 @@ class TrajectoryBuilder {
     Frame* current_frame;
     Atom* current_atom;
     uint8_t current_coordinate = 0;
+    std::shared_ptr<spdlog::logger> logger;
 
 public:
 
