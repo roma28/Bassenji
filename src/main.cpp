@@ -28,7 +28,8 @@ cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
             ("i,input", "Input file", cxxopts::value<std::string>())
             ("o,output", "Output file", cxxopts::value<std::string>())
             ("v,verbose", "Logging level", cxxopts::value<int>()->default_value("2"))
-            ("trace-parsing", "trace-parsing", cxxopts::value<bool>());
+            ("trace-parsing", "trace-parsing", cxxopts::value<bool>())
+            ("r,rmsd", "RMSD threshold", cxxopts::value<double>());
 
     cxxopts::ParseResult options = opt.parse(argc, argv);
 
@@ -53,7 +54,7 @@ int main(int argc, char* argv[])
     Trajectory* traj = r->ReadFile(options["input"].as<std::string>());
     spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
-    RMSDTrajectoryProcessor p(0.125);
+    RMSDTrajectoryProcessor p(options["rmsd"].as<double>());
     p.Process(traj);
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
