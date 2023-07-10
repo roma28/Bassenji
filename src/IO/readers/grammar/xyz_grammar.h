@@ -21,17 +21,25 @@ namespace pegtl = tao::pegtl;
 
 struct atom_symbol : pegtl::rep_min_max<1, 2, pegtl::alpha> { };
 
-struct coordinate : pegtl::seq<
+struct coord1 : pegtl::seq<
         pegtl::opt<pegtl::one<'-'>>,
         pegtl::plus<pegtl::digit>,
         pegtl::one<'.'>,
         pegtl::plus<pegtl::digit>> {
 };
 
+struct coord2 : pegtl::seq<
+        pegtl::opt<pegtl::one<'-'>>,
+        pegtl::plus<pegtl::digit>> {
+};
+
+struct coordinate : pegtl::sor<coord1, coord2> {
+};
+
 struct xyz_frame_header : pegtl::seq<
         pegtl::plus<pegtl::digit>,
         pegtl::eol,
-        pegtl::star<pegtl::alnum>,
+        pegtl::star<pegtl::ascii::print>,
         pegtl::eol
 > {
 };
@@ -52,7 +60,8 @@ struct xyz_frame : pegtl::seq<
 };
 
 struct xyz_file : pegtl::must<
-        pegtl::plus<xyz_frame>> {
+        pegtl::plus<xyz_frame>
+> {
 };
 
 template<typename Rule>
