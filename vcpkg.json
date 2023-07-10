@@ -1,0 +1,21 @@
+{
+  "name" : "bassenji",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "64adda19c86e89526b5e27703a193c14477cce07",
+  "dependencies" : [ {
+    "name" : "fmt",
+    "version>=" : "10.0.0"
+  }, {
+    "name" : "eigen3",
+    "version>=" : "3.4.0#2"
+  }, {
+    "name" : "spdlog",
+    "version>=" : "1.11.0#1"
+  }, {
+    "name" : "pegtl",
+    "version>=" : "3.2.7"
+  }, {
+    "name" : "cxxopts",
+    "version>=" : "3.1.1"
+  } ]
+}
