@@ -38,6 +38,9 @@ void TrajectoryBuilder::NewMolecule()
     this->logger->trace("New molecule");
     auto m = new Molecule();
     this->current_frame->molecules.push_back(m);
+    if (current_molecule) {
+        current_molecule->CalculateCentroid();
+    }
     this->current_molecule = m;
 }
 

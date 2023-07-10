@@ -16,10 +16,10 @@
 #include "Trajectory.h"
 class TrajectoryBuilder {
 
-    Trajectory* trajectory;
-    Molecule* current_molecule;
-    Frame* current_frame;
-    Atom* current_atom;
+    Trajectory* trajectory = NULL;
+    Molecule* current_molecule = NULL;
+    Frame* current_frame = NULL;
+    Atom* current_atom = NULL;
     uint8_t current_coordinate = 0;
     std::shared_ptr<spdlog::logger> logger;
 

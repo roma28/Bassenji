@@ -16,9 +16,14 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/cfg/env.h>
 
+#include <tao/pegtl.hpp>
+#include <tao/pegtl/contrib/trace.hpp>
+
 #include "IO/ReaderFactory.h"
 #include "IO/WriterFactory.h"
 #include "calculations/RMSDTrajectoryProcessor.h"
+
+#include "IO/readers/grammar/xyz_grammar.h"
 
 cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 {
@@ -49,6 +54,13 @@ int main(int argc, char* argv[])
 {
     cxxopts::ParseResult options = parse_arguments(argc, argv);
     spdlog::cfg::load_env_levels();
+
+    if(options["trace-parsing"].as<bool>())
+    {
+        auto in = tao::pegtl::file_input<>(options["input"].as<std::string>());
+        tao::pegtl::standard_trace<xyz_file>(in);
+        return 0;
+    }
 
     FileReader* r = ReaderFactory::GetReader("");
     Trajectory* traj = r->ReadFile(options["input"].as<std::string>());

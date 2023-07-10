@@ -33,12 +33,6 @@ void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory)
         this->logger->trace("Processing frame {0} out of {1}", frames_processed, trajectory->frames.size());
         for (const auto m : f->molecules) {
 
-//            // if no unique conformers the first one is automatically unique
-//            if (uniques.empty()) {
-//                uniques.emplace_back(m, 1);
-//                continue;
-//            }
-
             size_t n_uniques = this->uniques.size();
             this->logger->trace("Comparing against {0} uniques", n_uniques);
             bool is_unique = true;
@@ -48,7 +42,6 @@ void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory)
                 if (rmsd(m, uniques[i].first)<rmsd_threshold) {
                     uniques[i].second++;
                     is_unique = false;
-                    break;
                 }
             }
             if (is_unique) {
@@ -70,8 +63,8 @@ double RMSDTrajectoryProcessor::rmsd(const Molecule* A, const Molecule* B) const
     Eigen::MatrixX3d P(A->atoms.size(), 3);
     Eigen::MatrixX3d Q(B->atoms.size(), 3);
 
-    const Eigen::Vector3d centroidA = A->Centroid();
-    const Eigen::Vector3d centroidB = B->Centroid();
+    const Eigen::Vector3d centroidA = A->GetCentroid();
+    const Eigen::Vector3d centroidB = B->GetCentroid();
 
     for (size_t i = 0; i<A->atoms.size(); ++i) {
         P.row(i) = A->atoms[i]->coordinates-centroidA;
@@ -87,10 +80,11 @@ Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::Ma
 {
     const auto H = P.transpose()*Q;
 
-    Eigen::JacobiSVD<Eigen::MatrixX3d> svd;
+//    Eigen::JacobiSVD<Eigen::MatrixX3d> svd;
+    Eigen::BDCSVD<Eigen::MatrixX3d> svd;
     svd.compute(H, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
-    int8_t d = svd.matrixV().determinant()*svd.matrixU().determinant()>0 ? 1 : -1;
+    int8_t d = (svd.matrixV()*svd.matrixU()).determinant()>0 ? 1 : -1;
 
     return svd.matrixV()*
             Eigen::DiagonalMatrix<double, 3>(1, 1, d)
@@ -115,7 +109,7 @@ std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() 
 
     for (const auto p : this->uniques) {
         Molecule* m = new Molecule(*p.first);
-        const Eigen::Vector3d mCentroid = m->Centroid();
+        const Eigen::Vector3d mCentroid = m->GetCentroid();
         for (const auto a : m->atoms) {
             a->coordinates -= mCentroid;
         }
