@@ -12,29 +12,10 @@
 
 #ifndef BASSENJI_SRC_XYZ_GRAMMAR_H_
 #define BASSENJI_SRC_XYZ_GRAMMAR_H_
-#include "tao/pegtl.hpp"
-#include "spdlog/spdlog.h"
+#include <tao/pegtl.hpp>
 
+#include "misc_grammar.h"
 #include "../../../molecular/include/TrajectoryBuilder.h"
-
-namespace pegtl = tao::pegtl;
-
-struct atom_symbol : pegtl::rep_min_max<1, 2, pegtl::alpha> { };
-
-struct coord1 : pegtl::seq<
-        pegtl::opt<pegtl::one<'-'>>,
-        pegtl::plus<pegtl::digit>,
-        pegtl::one<'.'>,
-        pegtl::plus<pegtl::digit>> {
-};
-
-struct coord2 : pegtl::seq<
-        pegtl::opt<pegtl::one<'-'>>,
-        pegtl::plus<pegtl::digit>> {
-};
-
-struct coordinate : pegtl::sor<coord1, coord2> {
-};
 
 struct xyz_frame_header : pegtl::seq<
         pegtl::plus<pegtl::digit>,
