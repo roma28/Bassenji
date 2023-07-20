@@ -12,7 +12,7 @@
 
 #ifndef BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_
 #define BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_
-#include "../molecular/include/Trajectory.h"
+#include "molecular/Trajectory.h"
 #include "TrajectoryProcessor.h"
 
 class RMSDTrajectoryProcessor : TrajectoryProcessor {

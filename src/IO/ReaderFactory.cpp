@@ -11,7 +11,8 @@
 //
 
 #include "ReaderFactory.h"
-#include "readers/XYZFileReader.h"
+#include <IO/readers/XYZFileReader.h>
+#include <IO/readers/PDBFileReader.h>
 
 FileReader* ReaderFactory::GetReader(const std::string& specifier)
 {

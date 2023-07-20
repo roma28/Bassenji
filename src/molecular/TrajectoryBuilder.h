@@ -13,7 +13,7 @@
 #ifndef BASSENJI_SRC_MOLECULAR_TRAJECTORYBUILDER_H_
 #define BASSENJI_SRC_MOLECULAR_TRAJECTORYBUILDER_H_
 
-#include "Trajectory.h"
+#include <molecular/Trajectory.h>
 class TrajectoryBuilder {
 
     Trajectory* trajectory = NULL;

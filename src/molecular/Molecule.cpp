@@ -10,7 +10,7 @@
 //
 //
 
-#include "include/Molecule.h"
+#include "Molecule.h"
 void Molecule::CalculateCentroid()
 {
         Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);

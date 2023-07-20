@@ -13,7 +13,7 @@
 #ifndef BASSENJI_TRAJECTORYPROCESSOR_H
 #define BASSENJI_TRAJECTORYPROCESSOR_H
 
-#include "../molecular/include/Trajectory.h"
+#include "molecular/Trajectory.h"
 class TrajectoryProcessor {
 
 public:

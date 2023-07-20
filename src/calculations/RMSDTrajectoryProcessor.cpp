@@ -18,6 +18,7 @@
 #include <numeric>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <omp.h>
 
 RMSDTrajectoryProcessor::RMSDTrajectoryProcessor(double threshold)
 {
@@ -34,10 +35,11 @@ void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory)
         for (const auto m : f->molecules) {
 
             size_t n_uniques = this->uniques.size();
-            this->logger->trace("Comparing against {0} uniques", n_uniques);
+            this->logger->trace("Comparing against {0} uniques using {1} threads", n_uniques, omp_get_num_threads());
             bool is_unique = true;
 
             // testing against all the uniques
+#pragma omp parallel for default(none) shared(n_uniques) shared(m) reduction(&&:is_unique)
             for (size_t i = 0; i<n_uniques; ++i) {
                 if (rmsd(m, uniques[i].first)<rmsd_threshold) {
                     uniques[i].second++;
@@ -97,8 +99,6 @@ double RMSDTrajectoryProcessor::_rmsd(const Eigen::MatrixX3d& P, const Eigen::Ma
     this->logger->trace("RMSD = {0:.4f}", rmsd);
     return rmsd;
 }
-
-
 
 std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() const
 {

@@ -10,7 +10,7 @@
 //
 //
 
-#include "include/TrajectoryBuilder.h"
+#include "TrajectoryBuilder.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 TrajectoryBuilder::TrajectoryBuilder()
