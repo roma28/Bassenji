@@ -35,12 +35,12 @@ void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory)
         for (const auto m : f->molecules) {
 
             size_t n_uniques = this->uniques.size();
-            this->logger->trace("Comparing against {0} uniques using {1} threads", n_uniques, omp_get_num_threads());
             bool is_unique = true;
 
             // testing against all the uniques
-#pragma omp parallel for default(none) shared(n_uniques) shared(m) reduction(&&:is_unique)
+#pragma omp parallel for  shared(m, uniques, n_uniques) reduction(&&:is_unique) default(none)
             for (size_t i = 0; i<n_uniques; ++i) {
+                this->logger->trace("Comparing against {0} uniques using {1} threads", n_uniques, omp_get_num_threads());
                 if (rmsd(m, uniques[i].first)<rmsd_threshold) {
                     uniques[i].second++;
                     is_unique = false;

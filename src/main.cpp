@@ -15,15 +15,16 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/cfg/env.h>
+#include <omp.h>
 
 #include <tao/pegtl.hpp>
 #include <tao/pegtl/contrib/trace.hpp>
 
-#include "IO/ReaderFactory.h"
-#include "IO/WriterFactory.h"
-#include "calculations/RMSDTrajectoryProcessor.h"
+#include <IO/ReaderFactory.h>
+#include <IO/WriterFactory.h>
+#include <calculations/RMSDTrajectoryProcessor.h>
+#include <IO/readers/grammar/xyz_grammar.h>
 
-#include "IO/readers/grammar/xyz_grammar.h"
 
 cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 {
@@ -38,7 +39,6 @@ cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 
     cxxopts::ParseResult options = opt.parse(argc, argv);
 
-    spdlog::info("Bassenji started");
     spdlog::set_level(static_cast<spdlog::level::level_enum>(options["verbose"].as<int>()));
 
     for (auto const& arg : options.arguments()) {
@@ -54,6 +54,9 @@ int main(int argc, char* argv[])
 {
     cxxopts::ParseResult options = parse_arguments(argc, argv);
     spdlog::cfg::load_env_levels();
+
+    spdlog::info("Bassenji started");
+    spdlog::info("Using {0} OMP Threads out of {1} available", omp_get_num_threads(), omp_get_max_threads());
 
     if(options["trace-parsing"].as<bool>())
     {
