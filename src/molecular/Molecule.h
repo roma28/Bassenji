@@ -30,9 +30,12 @@ public:
 
     std::vector<Atom*> atoms;
 
-    void CalculateCentroid();
+    void UpdateCentroid();
 
     Eigen::Vector3d GetCentroid() const;
+
+    const int n_atom() { return atoms.size(); }
+
 };
 
 #endif //BASSENJI_SRC_MOLECULE_H_

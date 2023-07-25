@@ -18,3 +18,6 @@ Trajectory::~Trajectory()
         delete f;
     }
 }
+size_t Trajectory::n_frames() const {
+  return frames.size();
+}

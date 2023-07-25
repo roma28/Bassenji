@@ -22,6 +22,8 @@ public:
     std::vector<Molecule*> molecules;
     Frame() = default;
     ~Frame();
+
+    const int n_mol() { return molecules.size(); };
 };
 
 #endif //BASSENJI_SRC_MOLECULAR_FRAME_H_

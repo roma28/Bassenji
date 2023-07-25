@@ -25,6 +25,8 @@ public:
 
     ~Trajectory();
 
+     size_t n_frames() const;
+
 };
 
 #endif //BASSENJI_SRC_MOLECULAR_TRAJECTORY_H_

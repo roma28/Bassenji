@@ -11,7 +11,7 @@
 //
 
 #include "Molecule.h"
-void Molecule::CalculateCentroid()
+void Molecule::UpdateCentroid()
 {
         Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);
         double total_mass = 0;
