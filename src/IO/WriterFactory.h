@@ -15,7 +15,8 @@
 
 #include <IO/writers/FileWriter.h>
 
-class WriterFactory {
+class WriterFactory
+{
 public:
     WriterFactory() = delete;
     static FileWriter* GetWriter(const std::string& specifier);

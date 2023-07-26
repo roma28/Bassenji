@@ -15,7 +15,8 @@
 
 #include <IO/readers/FileReader.h>
 
-class ReaderFactory {
+class ReaderFactory
+{
 public:
     ReaderFactory() = delete;
     static FileReader* GetReader(const std::string& specifier);

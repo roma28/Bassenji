@@ -14,7 +14,9 @@
 #define BASSENJI_SRC_XYZPARSER_H_
 
 #include "FileReader.h"
-class XYZFileReader : public FileReader {
+
+class XYZFileReader : public FileReader
+{
 public:
     XYZFileReader() = default;
     Trajectory* ReadFile(const std::string& fname);

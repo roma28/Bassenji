@@ -15,20 +15,24 @@
 #include "molecular/Trajectory.h"
 #include "TrajectoryProcessor.h"
 
-class RMSDTrajectoryProcessor : TrajectoryProcessor {
+class RMSDTrajectoryProcessor : TrajectoryProcessor
+{
 protected:
     double rmsd(const Molecule* A, const Molecule* B) const;
     double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const;
-    Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const;
+    static Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
+    static Trajectory balance_trajectory(const Trajectory* trajectory);
 
     double rmsd_threshold;
-    std::vector<std::pair<Molecule*, uint32_t>> uniques;
+    std::vector<std::pair<Molecule*, size_t>> uniques;
     std::shared_ptr<spdlog::logger> logger;
 
 public:
     RMSDTrajectoryProcessor(double threshold);
 
     void Process(const Trajectory* trajectory) override;
+
+    void ProcessParallel(const Trajectory* trajectory, size_t n_jobs = 1);
 
     std::vector<std::pair<Molecule*, double>> GetUniques() const override;
 };

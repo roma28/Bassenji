@@ -15,7 +15,8 @@
 
 #include "Molecule.h"
 
-class Residiue : Molecule {
+class Residiue : Molecule
+{
 public:
     Residiue();
 };

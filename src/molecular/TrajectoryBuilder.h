@@ -14,7 +14,9 @@
 #define BASSENJI_SRC_MOLECULAR_TRAJECTORYBUILDER_H_
 
 #include <molecular/Trajectory.h>
-class TrajectoryBuilder {
+
+class TrajectoryBuilder
+{
 
     Trajectory* trajectory = NULL;
     Molecule* current_molecule = NULL;

@@ -15,7 +15,6 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/cfg/env.h>
-#include <omp.h>
 
 #include <tao/pegtl.hpp>
 #include <tao/pegtl/contrib/trace.hpp>
@@ -25,17 +24,24 @@
 #include <calculations/RMSDTrajectoryProcessor.h>
 #include <IO/readers/grammar/xyz_grammar.h>
 
-
 cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 {
     cxxopts::Options opt("Bassenji", "A MD-based conformer generator");
     opt.allow_unrecognised_options();
-    opt.add_options()
-            ("i,input", "Input file", cxxopts::value<std::string>())
-            ("o,output", "Output file", cxxopts::value<std::string>())
-            ("v,verbose", "Logging level", cxxopts::value<int>()->default_value("2"))
-            ("trace-parsing", "trace-parsing", cxxopts::value<bool>())
-            ("r,rmsd", "RMSD threshold", cxxopts::value<double>());
+    opt.add_options()("i,input", "Input file", cxxopts::value<std::string>())("o,output",
+                                                                              "Output file",
+                                                                              cxxopts::value<std::string>())("v,verbose",
+                                                                                                             "Logging level",
+                                                                                                             cxxopts::value<
+                                                                                                                 int>()
+                                                                                                                 ->default_value(
+                                                                                                                     "2"))(
+        "trace-parsing",
+        "trace-parsing",
+        cxxopts::value<bool>())("r,rmsd", "RMSD threshold", cxxopts::value<double>())("j,jobs",
+                                                                                      "Number of parallel threads",
+                                                                                      cxxopts::value<int>()
+                                                                                          ->default_value("1"));
 
     cxxopts::ParseResult options = opt.parse(argc, argv);
 
@@ -56,10 +62,8 @@ int main(int argc, char* argv[])
     spdlog::cfg::load_env_levels();
 
     spdlog::info("Bassenji started");
-    spdlog::info("Using {0} OMP Threads out of {1} available", omp_get_num_threads(), omp_get_max_threads());
 
-    if(options["trace-parsing"].as<bool>())
-    {
+    if (options["trace-parsing"].as<bool>()) {
         auto in = tao::pegtl::file_input<>(options["input"].as<std::string>());
         tao::pegtl::standard_trace<xyz_file>(in);
         return 0;
@@ -70,7 +74,7 @@ int main(int argc, char* argv[])
     spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
     RMSDTrajectoryProcessor p(options["rmsd"].as<double>());
-    p.Process(traj);
+    p.ProcessParallel(traj, options["jobs"].as<int>());
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
     FileWriter* w = WriterFactory::GetWriter("");

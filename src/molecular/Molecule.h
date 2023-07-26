@@ -19,7 +19,8 @@
 
 #include "Atom.h"
 
-class Molecule {
+class Molecule
+{
     Eigen::Vector3d _centroid;
 public:
     Molecule() = default;
@@ -34,7 +35,8 @@ public:
 
     Eigen::Vector3d GetCentroid() const;
 
-    const int n_atom() { return atoms.size(); }
+    const int n_atom()
+    { return atoms.size(); }
 
 };
 

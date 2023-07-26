@@ -17,5 +17,8 @@
   }, {
     "name" : "cxxopts",
     "version>=" : "3.1.1"
+  }, {
+    "name" : "taskflow",
+    "version>=" : "3.6.0"
   } ]
 }

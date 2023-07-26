@@ -17,7 +17,8 @@
 
 #include "Frame.h"
 
-class Trajectory {
+class Trajectory
+{
 public:
     std::vector<Frame*> frames;
 
@@ -25,7 +26,7 @@ public:
 
     ~Trajectory();
 
-     size_t n_frames() const;
+    size_t n_frames() const;
 
 };
 

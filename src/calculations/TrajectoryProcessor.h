@@ -14,7 +14,9 @@
 #define BASSENJI_TRAJECTORYPROCESSOR_H
 
 #include "molecular/Trajectory.h"
-class TrajectoryProcessor {
+
+class TrajectoryProcessor
+{
 
 public:
     virtual void Process(const Trajectory* trajectory) = 0;

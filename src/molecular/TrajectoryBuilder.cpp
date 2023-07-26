@@ -39,7 +39,7 @@ void TrajectoryBuilder::NewMolecule()
     auto m = new Molecule();
     this->current_frame->molecules.push_back(m);
     if (current_molecule) {
-        current_molecule->CalculateCentroid();
+        current_molecule->UpdateCentroid();
     }
     this->current_molecule = m;
 }

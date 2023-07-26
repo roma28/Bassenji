@@ -15,7 +15,8 @@
 
 #include <molecular/Trajectory.h>
 
-class FileReader {
+class FileReader
+{
 public:
     FileReader() = default;
     virtual Trajectory* ReadFile(const std::string& fname) = 0;

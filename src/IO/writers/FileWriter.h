@@ -15,10 +15,11 @@
 
 #include "molecular/Molecule.h"
 
-class FileWriter {
+class FileWriter
+{
 public:
-    virtual void WriteFile(const
-    std::vector<std::pair<Molecule*, double>>& ensemble, const std::string& fname) const = 0;
+    virtual void
+    WriteFile(const std::vector<std::pair<Molecule*, double>>& ensemble, const std::string& fname) const = 0;
 };
 
 #endif //BASSENJI_FILEWRITER_H
