@@ -13,7 +13,7 @@
 
 #include "FileWriter.h"
 
-class XYZFileWriter : public FileWriter
+class XYZFileWriter final : public FileWriter
 {
     static std::string formatMolecule(const Molecule& m);
     static std::string formatAtom(const Atom& a);

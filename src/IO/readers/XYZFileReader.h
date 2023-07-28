@@ -13,7 +13,7 @@
 
 #include "FileReader.h"
 
-class XYZFileReader : public FileReader
+class XYZFileReader final : public FileReader
 {
 public:
     XYZFileReader() = default;
