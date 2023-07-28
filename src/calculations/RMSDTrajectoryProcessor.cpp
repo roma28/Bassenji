@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "RMSDTrajectoryProcessor.h"
 
@@ -88,7 +86,7 @@ std::vector<std::pair<Molecule, double>> RMSDTrajectoryProcessor::GetUniques() c
             a.coordinates -= mCentroid;
         }
         u.emplace_back(m, p.second / population_sum);
-    } //-V773
+    }
 
     return u;
 }
@@ -140,7 +138,6 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_job
     };
 
     tf.transform_reduce(t.frames.begin(), t.frames.end(), this->uniques, bop, uop);
-
     e.run(tf).wait();
 }
 
@@ -150,14 +147,14 @@ Trajectory RMSDTrajectoryProcessor::rebalance_trajectory(const Trajectory& traje
     int total_molecules = 0;
     std::vector<Molecule> all_molecules;
 
-    for (const auto f : trajectory.frames) {
+    for (const auto& f : trajectory.frames) {
         total_molecules += f.n_mol();
-        for (auto m : f.molecules) {
+        for (const auto& m : f.molecules) {
             all_molecules.push_back(m);
         }
     }
 
-    int mol_per_frame = sqrt(total_molecules) + 1;
+    const int mol_per_frame = sqrt(total_molecules) + 1;
 
     Trajectory t;
 

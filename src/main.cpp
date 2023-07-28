@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include <iostream>
 #include <fstream>
@@ -69,7 +67,7 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    FileReader* r = ReaderFactory::GetReader("");
+    auto r = ReaderFactory::GetReader("");
     auto traj = r->ReadFile(options["input"].as<std::string>());
     spdlog::debug("Parsing done: {0} frames in trajectory", traj.frames.size());
 
@@ -77,7 +75,7 @@ int main(int argc, char* argv[])
     p.Process(traj, options["jobs"].as<int>());
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
-    FileWriter* w = WriterFactory::GetWriter("");
+    auto w = WriterFactory::GetWriter("");
     w->WriteFile(p.GetUniques(), options["output"].as<std::string>());
 }
 

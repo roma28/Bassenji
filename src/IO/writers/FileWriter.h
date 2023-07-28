@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_FILEWRITER_H
 #define BASSENJI_FILEWRITER_H
@@ -18,6 +16,7 @@
 class FileWriter
 {
 public:
+    virtual ~FileWriter() = default;
     virtual void
     WriteFile(const std::vector<std::pair<Molecule, double>>& ensemble, const std::string& fname) const = 0;
 };

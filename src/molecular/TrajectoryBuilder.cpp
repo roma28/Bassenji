@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "TrajectoryBuilder.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -26,7 +24,7 @@ Trajectory TrajectoryBuilder::GetTrajectory()
             m.UpdateCentroid();
         }
     }
-    return trajectory;
+    return std::move(trajectory);
 }
 
 void TrajectoryBuilder::NewFrame()

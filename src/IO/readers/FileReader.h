@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_PARSER_H_
 #define BASSENJI_SRC_PARSER_H_
@@ -18,7 +16,7 @@
 class FileReader
 {
 public:
-    FileReader() = default;
+    virtual ~FileReader() = default;
     virtual Trajectory ReadFile(const std::string& fname) = 0;
 };
 

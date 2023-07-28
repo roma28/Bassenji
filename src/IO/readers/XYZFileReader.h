@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_XYZPARSER_H_
 #define BASSENJI_SRC_XYZPARSER_H_
@@ -19,7 +17,7 @@ class XYZFileReader : public FileReader
 {
 public:
     XYZFileReader() = default;
-    Trajectory ReadFile(const std::string& fname);
+    Trajectory ReadFile(const std::string& fname) override;
 };
 
 #endif //BASSENJI_SRC_XYZPARSER_H_

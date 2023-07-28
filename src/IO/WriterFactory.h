@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_WRITERFACTORY_H
 #define BASSENJI_WRITERFACTORY_H
@@ -19,7 +17,7 @@ class WriterFactory
 {
 public:
     WriterFactory() = delete;
-    static FileWriter* GetWriter(const std::string& specifier);
+    static std::unique_ptr<FileWriter> GetWriter(const std::string& specifier);
 };
 
 #endif //BASSENJI_WRITERFACTORY_H
