@@ -35,7 +35,7 @@ public:
 
     Eigen::Vector3d GetCentroid() const;
 
-    const int n_atom()
+    int n_atom() const
     { return atoms.size(); }
 
 };

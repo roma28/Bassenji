@@ -15,7 +15,7 @@
 Trajectory::~Trajectory()
 {
     for (auto f : this->frames) {
-//        delete f;
+        delete f;
     }
 }
 

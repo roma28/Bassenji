@@ -18,10 +18,10 @@
 class RMSDTrajectoryProcessor : TrajectoryProcessor
 {
 protected:
-    double rmsd(const Molecule* A, const Molecule* B) const;
-    double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const;
+    static double rmsd(const Molecule* A, const Molecule* B);
+    static double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
     static Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
-    static Trajectory balance_trajectory(const Trajectory* trajectory);
+    static Trajectory rebalance_trajectory(const Trajectory* trajectory);
 
     double rmsd_threshold;
     std::vector<std::pair<Molecule*, size_t>> uniques;
@@ -30,9 +30,7 @@ protected:
 public:
     RMSDTrajectoryProcessor(double threshold);
 
-    void Process(const Trajectory* trajectory) override;
-
-    void ProcessParallel(const Trajectory* trajectory, size_t n_jobs = 1);
+    void Process(const Trajectory* trajectory, size_t n_jobs = 4) override;
 
     std::vector<std::pair<Molecule*, double>> GetUniques() const override;
 };

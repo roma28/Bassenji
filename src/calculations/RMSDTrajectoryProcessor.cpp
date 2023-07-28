@@ -33,46 +33,12 @@ RMSDTrajectoryProcessor::RMSDTrajectoryProcessor(double threshold)
     this->rmsd_threshold = threshold;
 }
 
-void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory)
+double RMSDTrajectoryProcessor::rmsd(const Molecule* A, const Molecule* B)
 {
-
-    size_t frames_processed = 1;
-    for (const auto f : trajectory->frames) {
-        this->logger->trace("Processing frame {0} out of {1}", frames_processed, trajectory->frames.size());
-        for (const auto m : f->molecules) {
-
-            size_t n_uniques = this->uniques.size();
-            std::vector<bool> is_unique(n_uniques, true);
-
-            tf::Taskflow tf;
-            tf::Executor e;
-            bool res = true;
-            auto reduce_task = tf.reduce(is_unique.begin(), is_unique.end(), res, [](bool r, bool l)
-            { return l && r; });
-
-            // testing against all the uniques
-            for (size_t i = 0; i < n_uniques; ++i) {
-                tf.emplace([&]()
-                           {
-                               is_unique[i] = rmsd(m, uniques[i].first) < rmsd_threshold;
-                           }).precede(reduce_task);
-            }
-            e.run(tf).wait();
-            if (res) {
-                uniques.emplace_back(m, 1);
-            }
-        }
-        frames_processed++;
-    }
-}
-
-double RMSDTrajectoryProcessor::rmsd(const Molecule* A, const Molecule* B) const
-{
-
     if (A->atoms.size() != B->atoms.size()) {
-        this->logger
-            ->error("The number of atoms in molecules is not equal: {0} and {1}", A->atoms.size(), B->atoms.size());
-        throw std::invalid_argument("The number of atoms in molecules is not equal");
+        throw std::invalid_argument(fmt::format("The number of atoms in molecules is not equal: {0} and {1}",
+                                                A->n_atom(),
+                                                B->n_atom()));
     }
 
     Eigen::MatrixX3d P(A->atoms.size(), 3);
@@ -92,10 +58,8 @@ double RMSDTrajectoryProcessor::rmsd(const Molecule* A, const Molecule* B) const
 
 Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q)
 {
-
     const auto H = P.transpose() * Q;
 
-    //    Eigen::JacobiSVD<Eigen::MatrixX3d> svd;
     Eigen::BDCSVD<Eigen::MatrixX3d> svd;
     svd.compute(H, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
@@ -104,12 +68,9 @@ Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::Ma
     return svd.matrixV() * Eigen::DiagonalMatrix<double, 3>(1, 1, d) * svd.matrixU().transpose();
 }
 
-double RMSDTrajectoryProcessor::_rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q) const
+double RMSDTrajectoryProcessor::_rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q)
 {
-
-    double rmsd = sqrt((P - Q).squaredNorm() / P.rows());
-    this->logger->trace("RMSD = {0:.4f}", rmsd);
-    return rmsd;
+    return sqrt((P - Q).squaredNorm() / P.rows());
 }
 
 std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() const
@@ -122,7 +83,7 @@ std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() 
     { return previous + item.second; });
 
     for (const auto p : this->uniques) {
-        Molecule* m = new Molecule(*p.first);
+        auto* m = new Molecule(*p.first);
         const Eigen::Vector3d mCentroid = m->GetCentroid();
         for (const auto a : m->atoms) {
             a->coordinates -= mCentroid;
@@ -133,62 +94,58 @@ std::vector<std::pair<Molecule*, double>> RMSDTrajectoryProcessor::GetUniques() 
     return u;
 }
 
-void RMSDTrajectoryProcessor::ProcessParallel(const Trajectory* trajectory, size_t n_jobs)
+void RMSDTrajectoryProcessor::Process(const Trajectory* trajectory, size_t n_jobs)
 {
-
     tf::Taskflow tf;
     tf::Executor e(n_jobs);
 
-    Trajectory t = balance_trajectory(trajectory);
+    Trajectory t = rebalance_trajectory(trajectory);
+    double threshold = this->rmsd_threshold;
 
-    auto uop = [this](Frame* f)
+    auto uop = [threshold](const Frame* f)
     {
-        std::vector<std::pair<Molecule*, size_t>> local_uniques;
-        for (auto m1 : f->molecules) {
+        std::vector<std::pair<Molecule*, size_t>> frame_uniques;
+        for (const auto m1 : f->molecules) {
             bool is_unique = true;
-            for (auto& p : local_uniques) {
-                if (rmsd(p.first, m1) < rmsd_threshold) {
+            for (auto& p : frame_uniques) {
+                if (rmsd(p.first, m1) < threshold) {
                     is_unique = false;
                     p.second++;
                     break;
                 }
             }
             if (is_unique) {
-                local_uniques.emplace_back(m1, 1);
+                frame_uniques.emplace_back(new Molecule(*m1), 1);
             }
         }
-        return local_uniques;
+        return frame_uniques;
     };
 
-    auto bop = [this](std::vector<std::pair<Molecule*, size_t>> l, std::vector<std::pair<Molecule*, size_t>> r)
-    {
-        for (auto& p1 : l) {
-            bool is_unique = true;
-            for (auto p2 : r) {
-                if (rmsd(p2.first, p1.first) < rmsd_threshold) {
-                    is_unique = false;
-                    p2.second += p1.second;
-                    break;
+    auto bop =
+        [threshold](const std::vector<std::pair<Molecule*, size_t>>& l, std::vector<std::pair<Molecule*, size_t>> r)
+        {
+            for (const auto& p1 : l) {
+                bool is_unique = true;
+                for (auto p2 : r) {
+                    if (rmsd(p2.first, p1.first) < threshold) {
+                        is_unique = false;
+                        p2.second += p1.second;
+                        break;
+                    }
+                }
+                if (is_unique) {
+                    r.emplace_back(new Molecule(*p1.first), p1.second);
                 }
             }
-            if (is_unique) {
-                r.emplace_back(p1.first, p1.second);
-            }
-        }
-        return r;
-    };
+            return r;
+        };
 
-    std::vector<std::pair<Molecule*, size_t>> u;
-    tf.transform_reduce(t.frames.begin(), t.frames.end(), u, bop, uop);
+    tf.transform_reduce(t.frames.begin(), t.frames.end(), this->uniques, bop, uop);
 
     e.run(tf).wait();
-
-    this->uniques = u;
-
-    auto a = 1;
 }
 
-Trajectory RMSDTrajectoryProcessor::balance_trajectory(const Trajectory* trajectory)
+Trajectory RMSDTrajectoryProcessor::rebalance_trajectory(const Trajectory* trajectory)
 {
 
     int total_molecules = 0;

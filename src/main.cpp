@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
     spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
 
     RMSDTrajectoryProcessor p(options["rmsd"].as<double>());
-    p.ProcessParallel(traj, options["jobs"].as<int>());
+    p.Process(traj, options["jobs"].as<int>());
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
     FileWriter* w = WriterFactory::GetWriter("");
