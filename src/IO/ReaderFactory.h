@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_READERFACTORY_H
 #define BASSENJI_READERFACTORY_H
@@ -19,7 +17,7 @@ class ReaderFactory
 {
 public:
     ReaderFactory() = delete;
-    static FileReader* GetReader(const std::string& specifier);
+    static std::unique_ptr<FileReader> GetReader(const std::string& specifier);
 };
 
 #endif //BASSENJI_READERFACTORY_H

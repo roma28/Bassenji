@@ -7,15 +7,13 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_XYZFILEWRITER_H
 #define BASSENJI_XYZFILEWRITER_H
 
 #include "FileWriter.h"
 
-class XYZFileWriter : public FileWriter
+class XYZFileWriter final : public FileWriter
 {
     static std::string formatMolecule(const Molecule& m);
     static std::string formatAtom(const Atom& a);

@@ -7,15 +7,13 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_XYZPARSER_H_
 #define BASSENJI_SRC_XYZPARSER_H_
 
 #include "FileReader.h"
 
-class XYZFileReader : public FileReader
+class XYZFileReader final : public FileReader
 {
 public:
     XYZFileReader() = default;

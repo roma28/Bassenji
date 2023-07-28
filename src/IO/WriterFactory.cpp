@@ -7,13 +7,11 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "WriterFactory.h"
 #include <IO/writers/XYZFileWriter.h>
 
-FileWriter* WriterFactory::GetWriter(const std::string& specifier)
+std::unique_ptr<FileWriter> WriterFactory::GetWriter(const std::string& specifier)
 {
-    return new XYZFileWriter();
+    return std::move(std::make_unique<XYZFileWriter>());
 }

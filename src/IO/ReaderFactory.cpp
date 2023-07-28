@@ -7,14 +7,12 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "ReaderFactory.h"
 #include <IO/readers/XYZFileReader.h>
 #include <IO/readers/PDBFileReader.h>
 
-FileReader* ReaderFactory::GetReader(const std::string& specifier)
+std::unique_ptr<FileReader> ReaderFactory::GetReader(const std::string& specifier)
 {
-    return new XYZFileReader();
+    return std::move(std::make_unique<XYZFileReader>());
 }
