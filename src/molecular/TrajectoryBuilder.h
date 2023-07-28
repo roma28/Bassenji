@@ -18,18 +18,16 @@
 class TrajectoryBuilder
 {
 
-    Trajectory* trajectory = NULL;
-    Molecule* current_molecule = NULL;
-    Frame* current_frame = NULL;
-    Atom* current_atom = NULL;
+    Trajectory trajectory;
     uint8_t current_coordinate = 0;
-    std::shared_ptr<spdlog::logger> logger;
+
+    std::shared_ptr<spdlog::logger> _logger;
 
 public:
 
     TrajectoryBuilder();
 
-    Trajectory* GetTrajectory();
+    Trajectory GetTrajectory();
 
     void NewFrame();
 
@@ -40,6 +38,8 @@ public:
     void SetCurrentCoordinate(double c);
 
     void SetCurrentAtom(const std::string& s);
+
+    void NewAtom(const std::string& s, double x, double y, double z);
 };
 
 #endif //BASSENJI_SRC_MOLECULAR_TRAJECTORYBUILDER_H_

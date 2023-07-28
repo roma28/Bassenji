@@ -19,7 +19,7 @@ class XYZFileReader : public FileReader
 {
 public:
     XYZFileReader() = default;
-    Trajectory* ReadFile(const std::string& fname);
+    Trajectory ReadFile(const std::string& fname);
 };
 
 #endif //BASSENJI_SRC_XYZPARSER_H_

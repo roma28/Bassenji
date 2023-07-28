@@ -12,12 +12,6 @@
 
 #include "Trajectory.h"
 
-Trajectory::~Trajectory()
-{
-    for (auto f : this->frames) {
-        delete f;
-    }
-}
 
 size_t Trajectory::n_frames() const
 {

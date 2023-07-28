@@ -20,11 +20,9 @@
 class Trajectory
 {
 public:
-    std::vector<Frame*> frames;
+    std::vector<Frame> frames;
 
     Trajectory() = default;
-
-    ~Trajectory();
 
     size_t n_frames() const;
 

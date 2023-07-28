@@ -19,7 +19,7 @@ class FileWriter
 {
 public:
     virtual void
-    WriteFile(const std::vector<std::pair<Molecule*, double>>& ensemble, const std::string& fname) const = 0;
+    WriteFile(const std::vector<std::pair<Molecule, double>>& ensemble, const std::string& fname) const = 0;
 };
 
 #endif //BASSENJI_FILEWRITER_H

@@ -15,54 +15,56 @@
 
 TrajectoryBuilder::TrajectoryBuilder()
 {
-    this->logger = spdlog::stdout_color_st("TrajectoryBuilder");
-    this->logger->debug("Trajectory builder started");
-    this->trajectory = new Trajectory();
+    _logger = spdlog::stdout_color_st("TrajectoryBuilder");
+    _logger->debug("Trajectory builder started");
 }
 
-Trajectory* TrajectoryBuilder::GetTrajectory()
+Trajectory TrajectoryBuilder::GetTrajectory()
 {
-    return this->trajectory;
+    for (auto& f : trajectory.frames) {
+        for (auto& m : f.molecules) {
+            m.UpdateCentroid();
+        }
+    }
+    return trajectory;
 }
 
 void TrajectoryBuilder::NewFrame()
 {
-    this->logger->trace("New frame");
-    auto f = new Frame();
-    this->trajectory->frames.push_back(f);
-    this->current_frame = f;
+    _logger->trace("New frame");
+    trajectory.frames.emplace_back();
 }
 
 void TrajectoryBuilder::NewMolecule()
 {
-    this->logger->trace("New molecule");
-    auto m = new Molecule();
-    this->current_frame->molecules.push_back(m);
-    if (current_molecule) {
-        current_molecule->UpdateCentroid();
-    }
-    this->current_molecule = m;
+    _logger->trace("New molecule");
+    trajectory.frames.back().molecules.emplace_back();
 }
 
 void TrajectoryBuilder::NewAtom()
 {
-    this->logger->trace("New atom");
-    auto a = new Atom();
-    this->current_molecule->atoms.push_back(a);
-    this->current_atom = a;
-    this->current_coordinate = 0;
+    _logger->trace("New atom");
+    trajectory.frames.back().molecules.back().atoms.emplace_back();
+    current_coordinate = 0;
+}
+
+void TrajectoryBuilder::NewAtom(const std::string& s, double x, double y, double z)
+{
+    _logger->trace("New atom");
+    trajectory.frames.back().molecules.back().atoms.emplace_back(s, x, y, z);
+    current_coordinate = 0;
 }
 
 void TrajectoryBuilder::SetCurrentAtom(const std::string& s)
 {
-    this->logger->trace("Setting current atom to {0}", s);
-    this->current_atom->set_symbol(s);
+    _logger->trace("Setting current atom to {0}", s);
+    trajectory.frames.back().molecules.back().atoms.back().set_symbol(s);
 }
 
 void TrajectoryBuilder::SetCurrentCoordinate(double c)
 {
-    this->logger->trace("Setting current coordinate {0} to {1}", current_coordinate, c);
-    this->current_atom->coordinates[this->current_coordinate] = c;
-    this->current_coordinate++;
+    _logger->trace("Setting current coordinate {0} to {1}", current_coordinate, c);
+    trajectory.frames.back().molecules.back().atoms.back().coordinates[this->current_coordinate] = c;
+    current_coordinate++;
 }
 

@@ -19,7 +19,7 @@ class FileReader
 {
 public:
     FileReader() = default;
-    virtual Trajectory* ReadFile(const std::string& fname) = 0;
+    virtual Trajectory ReadFile(const std::string& fname) = 0;
 };
 
 #endif //BASSENJI_SRC_PARSER_H_

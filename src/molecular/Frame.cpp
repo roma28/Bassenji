@@ -11,10 +11,3 @@
 //
 
 #include "Frame.h"
-
-Frame::~Frame()
-{
-    for (auto m : this->molecules) {
-        delete m;
-    }
-}

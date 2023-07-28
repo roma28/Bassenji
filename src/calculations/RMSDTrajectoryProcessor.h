@@ -18,21 +18,19 @@
 class RMSDTrajectoryProcessor : TrajectoryProcessor
 {
 protected:
-    static double rmsd(const Molecule* A, const Molecule* B);
+    static double rmsd(const Molecule& A, const Molecule& B);
     static double _rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
     static Eigen::Matrix3d optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q);
-    static Trajectory rebalance_trajectory(const Trajectory* trajectory);
+    static Trajectory rebalance_trajectory(const Trajectory& trajectory);
 
     double rmsd_threshold;
-    std::vector<std::pair<Molecule*, size_t>> uniques;
+    std::vector<std::pair<Molecule, size_t>> uniques;
     std::shared_ptr<spdlog::logger> logger;
 
 public:
     RMSDTrajectoryProcessor(double threshold);
-
-    void Process(const Trajectory* trajectory, size_t n_jobs = 4) override;
-
-    std::vector<std::pair<Molecule*, double>> GetUniques() const override;
+    void Process(const Trajectory& trajectory, size_t n_jobs = 4) override;
+    std::vector<std::pair<Molecule, double>> GetUniques() const override;
 };
 
 #endif //BASSENJI_SRC_CALCULATIONS_RMSDTRAJECTORYPROCEESSOR_H_

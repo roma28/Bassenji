@@ -14,27 +14,13 @@
 
 void Molecule::UpdateCentroid()
 {
-    Eigen::Matrix<double, Eigen::Dynamic, 3> m(this->atoms.size(), 3);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> m(n_atom(), 3);
     double total_mass = 0;
-    for (size_t i = 0; i < this->atoms.size(); ++i) {
-        m.row(i) = this->atoms[i]->coordinates * this->atoms[i]->GetMass();
-        total_mass += this->atoms[i]->GetMass();
+    for (size_t i = 0; i < n_atom(); ++i) {
+        m.row(i) = atoms[i].coordinates * atoms[i].GetMass();
+        total_mass += atoms[i].GetMass();
     }
     _centroid = m.colwise().sum() / total_mass;
-}
-
-Molecule::~Molecule()
-{
-    for (auto a : this->atoms) {
-        delete a;
-    }
-}
-
-Molecule::Molecule(const Molecule& m)
-{
-    for (auto a : m.atoms) {
-        this->atoms.push_back(new Atom(*a));
-    }
 }
 
 Eigen::Vector3d Molecule::GetCentroid() const

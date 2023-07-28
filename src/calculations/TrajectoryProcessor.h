@@ -19,9 +19,9 @@ class TrajectoryProcessor
 {
 
 public:
-    virtual void Process(const Trajectory* trajectory, size_t n_jobs = 4) = 0;
+    virtual void Process(const Trajectory& trajectory, size_t n_jobs = 4) = 0;
 
-    virtual std::vector<std::pair<Molecule*, double>> GetUniques() const = 0;
+    virtual std::vector<std::pair<Molecule, double>> GetUniques() const = 0;
 };
 
 #endif //BASSENJI_TRAJECTORYPROCESSOR_H

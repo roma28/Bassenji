@@ -13,7 +13,7 @@
 #include "XYZFileReader.h"
 #include "grammar/xyz_grammar.h"
 
-Trajectory* XYZFileReader::ReadFile(const std::string& fname)
+Trajectory XYZFileReader::ReadFile(const std::string& fname)
 {
     auto in = tao::pegtl::file_input<>(fname);
     TrajectoryBuilder tb = TrajectoryBuilder();

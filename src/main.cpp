@@ -70,8 +70,8 @@ int main(int argc, char* argv[])
     }
 
     FileReader* r = ReaderFactory::GetReader("");
-    Trajectory* traj = r->ReadFile(options["input"].as<std::string>());
-    spdlog::debug("Parsing done: {0} frames in trajectory", traj->frames.size());
+    auto traj = r->ReadFile(options["input"].as<std::string>());
+    spdlog::debug("Parsing done: {0} frames in trajectory", traj.frames.size());
 
     RMSDTrajectoryProcessor p(options["rmsd"].as<double>());
     p.Process(traj, options["jobs"].as<int>());

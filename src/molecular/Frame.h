@@ -20,11 +20,11 @@
 class Frame
 {
 public:
-    std::vector<Molecule*> molecules;
+    std::vector<Molecule> molecules;
     Frame() = default;
-    ~Frame();
+    ~Frame() = default;
 
-    const int n_mol()
+    int n_mol() const
     { return molecules.size(); };
 };
 

@@ -25,11 +25,7 @@ class Molecule
 public:
     Molecule() = default;
 
-    Molecule(const Molecule& m);
-
-    ~Molecule();
-
-    std::vector<Atom*> atoms;
+    std::vector<Atom> atoms;
 
     void UpdateCentroid();
 
