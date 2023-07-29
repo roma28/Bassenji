@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include <fstream>
 
@@ -17,7 +15,7 @@
 void XYZFileWriter::WriteFile(const std::vector<std::pair<Molecule, double>>& ensemble, const std::string& fname) const
 {
     auto out = std::ofstream(fname);
-    for (auto c : ensemble) {
+    for (const auto& c : ensemble) {
         out << fmt::format("{}\n", c.first.n_atom());
         out << fmt::format("{:.4f}\n", c.second);
         out << formatMolecule(c.first);
@@ -27,7 +25,7 @@ void XYZFileWriter::WriteFile(const std::vector<std::pair<Molecule, double>>& en
 std::string XYZFileWriter::formatMolecule(const Molecule& m)
 {
     std::string s;
-    for (auto a : m.atoms) {
+    for (const auto& a : m.atoms) {
         s += formatAtom(a);
     }
     return s;

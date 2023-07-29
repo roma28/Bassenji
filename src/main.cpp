@@ -49,7 +49,7 @@ cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
         spdlog::debug("Argument \"{0}\" with value \"{1}\" received", arg.key(), arg.value());
     }
     for (auto unknown_arg : options.unmatched()) {
-        spdlog::warn("Unknown argument received {}", unknown_arg);
+        spdlog::warn("Unknown argument received {}, it will be ignored", unknown_arg);
     }
     return options;
 }
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    auto r = ReaderFactory::GetReader("");
+    auto r = ReaderFactory::GetReader(options["input"].as<std::string>());
     auto traj = r->ReadFile(options["input"].as<std::string>());
     spdlog::debug("Parsing done: {0} frames in trajectory", traj.frames.size());
 
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     p.Process(traj, options["jobs"].as<int>());
     spdlog::debug("{0} uniques found", p.GetUniques().size());
 
-    auto w = WriterFactory::GetWriter("");
+    auto w = WriterFactory::GetWriter(options["output"].as<std::string>());
     w->WriteFile(p.GetUniques(), options["output"].as<std::string>());
 }
 

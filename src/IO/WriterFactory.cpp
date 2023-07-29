@@ -10,8 +10,12 @@
 
 #include "WriterFactory.h"
 #include <IO/writers/XYZFileWriter.h>
+#include <IO/writers/SeparateXYZFilesWriter.h>
 
 std::unique_ptr<FileWriter> WriterFactory::GetWriter(const std::string& specifier)
 {
+    if (specifier.find('{') != std::string::npos) {
+        return std::move(std::make_unique<SeparateXYZFilesWriter>());
+    }
     return std::move(std::make_unique<XYZFileWriter>());
 }

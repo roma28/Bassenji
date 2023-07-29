@@ -8,18 +8,17 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-#ifndef BASSENJI_XYZFILEWRITER_H
-#define BASSENJI_XYZFILEWRITER_H
+#ifndef SEPARATEXYZFILESWRITER_H
+#define SEPARATEXYZFILESWRITER_H
 
-#include "FileWriter.h"
+#include "XYZFileWriter.h"
 
-class XYZFileWriter : public FileWriter
+class SeparateXYZFilesWriter : public XYZFileWriter
 {
-protected:
-    static std::string formatMolecule(const Molecule& m);
-    static std::string formatAtom(const Atom& a);
 public:
+    SeparateXYZFilesWriter() = default;
     void WriteFile(const std::vector<std::pair<Molecule, double>>& ensemble, const std::string& fname) const override;
 };
 
-#endif //BASSENJI_XYZFILEWRITER_H
+
+#endif //SEPARATEXYZFILESWRITER_H

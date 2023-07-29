@@ -24,7 +24,7 @@ add_executable(MDConfGen
         src/IO/readers/XYZFileReader.cpp
         src/IO/writers/XYZFileWriter.cpp
         src/IO/ReaderFactory.cpp
-        src/IO/WriterFactory.cpp)
+        src/IO/WriterFactory.cpp src/IO/writers/SeparateXYZFilesWriter.cpp src/IO/writers/SeparateXYZFilesWriter.h)
 
 target_link_libraries(MDConfGen PRIVATE fmt::fmt)
 target_link_libraries(MDConfGen PRIVATE spdlog::spdlog)
