@@ -63,7 +63,7 @@ Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::Ma
 
     int8_t d = (svd.matrixV() * svd.matrixU()).determinant() > 0 ? 1 : -1;
 
-    return svd.matrixV() * Eigen::DiagonalMatrix<double, 3>(1, 1, d) * svd.matrixU().transpose();
+    return std::move(svd.matrixV() * Eigen::DiagonalMatrix<double, 3>(1, 1, d) * svd.matrixU().transpose());
 }
 
 double RMSDTrajectoryProcessor::_rmsd(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q)
@@ -88,7 +88,7 @@ std::vector<std::pair<Molecule, double>> RMSDTrajectoryProcessor::GetUniques() c
         u.emplace_back(m, p.second / population_sum);
     }
 
-    return u;
+    return std::move(u);
 }
 
 void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_jobs)
@@ -115,7 +115,7 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_job
                 frame_uniques.emplace_back(m1, 1);
             }
         }
-        return frame_uniques;
+        return std::move(frame_uniques);
     };
 
     auto
@@ -123,7 +123,7 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_job
     {
         for (const auto& p1 : l) {
             bool is_unique = true;
-            for (auto p2 : r) {
+            for (auto& p2 : r) {
                 if (rmsd(p2.first, p1.first) < threshold) {
                     is_unique = false;
                     p2.second += p1.second;
@@ -134,7 +134,7 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_job
                 r.emplace_back(p1.first, p1.second);
             }
         }
-        return r;
+        return std::move(r);
     };
 
     tf.transform_reduce(t.frames.begin(), t.frames.end(), this->uniques, bop, uop);
@@ -149,9 +149,7 @@ Trajectory RMSDTrajectoryProcessor::rebalance_trajectory(const Trajectory& traje
 
     for (const auto& f : trajectory.frames) {
         total_molecules += f.n_mol();
-        for (const auto& m : f.molecules) {
-            all_molecules.push_back(m);
-        }
+        all_molecules.insert(all_molecules.end(), f.molecules.begin(), f.molecules.end());
     }
 
     const int mol_per_frame = sqrt(total_molecules) + 1;
@@ -166,5 +164,5 @@ Trajectory RMSDTrajectoryProcessor::rebalance_trajectory(const Trajectory& traje
         t.frames.back().molecules.push_back(all_molecules[i]);
         ++i;
     }
-    return t;
+    return std::move(t);
 }
