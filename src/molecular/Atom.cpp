@@ -15,7 +15,7 @@ Atom::Atom(const std::string& s)
     this->SetSymbol(s);
 }
 
-Atom::Atom(std::string s, double x, double y, double z)
+Atom::Atom(const std::string& s, double x, double y, double z)
 {
     this->SetSymbol(s);
     this->coordinates = {x, y, z};
@@ -29,11 +29,8 @@ void Atom::SetSymbol(const std::string& s)
     }
     catch (std::out_of_range& e) {
         spdlog::error("Unsupported atom symbol {0}", s);
+        throw;
     }
     this->atom_mass = atom_utilities::number_to_mass.at(this->atom_number);
 
 }
-//Atom::Atom(const Atom &a) {
-//  this->SetSymbol(a.atom_symbol);
-//  this->coordinates = a.coordinates;
-//};

@@ -72,7 +72,7 @@ public:
 
     Atom(const std::string& symbol);
 
-    Atom(std::string symbol, double x, double y, double z);
+    Atom(const std::string& symbol, double x, double y, double z);
 
     Eigen::Vector3d coordinates;
 
