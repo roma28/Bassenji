@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_MOLECULE_H_
 #define BASSENJI_SRC_MOLECULE_H_
@@ -22,6 +20,7 @@
 class Molecule
 {
     Eigen::Vector3d _centroid;
+    bool _centroid_updated = false;
 public:
     Molecule() = default;
 
@@ -29,7 +28,7 @@ public:
 
     void UpdateCentroid();
 
-    Eigen::Vector3d GetCentroid() const;
+    Eigen::Vector3d Centroid() const;
 
     int n_atom() const
     { return atoms.size(); }

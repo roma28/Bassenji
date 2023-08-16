@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_ATOM_H_
 #define BASSENJI_SRC_ATOM_H_
@@ -78,17 +76,22 @@ public:
 
     Eigen::Vector3d coordinates;
 
-    float GetMass() const
+    float Mass() const
     {
         return this->atom_mass;
     }
 
-    std::string GetSymbol() const
+    uint8_t Number() const
+    {
+        return this->atom_number;
+    }
+
+    std::string Symbol() const
     {
         return this->atom_symbol;
     }
 
-    void set_symbol(const std::string& s);
+    void SetSymbol(const std::string& s);
 };
 
 #endif //BASSENJI_SRC_ATOM_H_

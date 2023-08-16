@@ -34,16 +34,16 @@ RMSDTrajectoryProcessor::RMSDTrajectoryProcessor(double threshold)
 double RMSDTrajectoryProcessor::rmsd(const Molecule& A, const Molecule& B)
 {
     if (A.n_atom() != B.n_atom()) {
-        throw std::invalid_argument(fmt::format("The number of atoms in molecules is not equal: {0} and {1}",
-                                                A.n_atom(),
-                                                B.n_atom()));
+        throw std::runtime_error(fmt::format("The number of atoms in molecules is not equal: {0} and {1}",
+                                             A.n_atom(),
+                                             B.n_atom()));
     }
 
     Eigen::MatrixX3d P(A.n_atom(), 3);
     Eigen::MatrixX3d Q(B.n_atom(), 3);
 
-    const Eigen::Vector3d centroidA = A.GetCentroid();
-    const Eigen::Vector3d centroidB = B.GetCentroid();
+    const Eigen::Vector3d centroidA = A.Centroid();
+    const Eigen::Vector3d centroidB = B.Centroid();
 
     for (size_t i = 0; i < A.n_atom(); ++i) {
         P.row(i) = A.atoms[i].coordinates - centroidA;
@@ -57,10 +57,8 @@ double RMSDTrajectoryProcessor::rmsd(const Molecule& A, const Molecule& B)
 Eigen::Matrix3d RMSDTrajectoryProcessor::optimal_rotation_matrix(const Eigen::MatrixX3d& P, const Eigen::MatrixX3d& Q)
 {
     const auto H = P.transpose() * Q;
-
     Eigen::BDCSVD<Eigen::MatrixX3d> svd;
     svd.compute(H, Eigen::ComputeFullU | Eigen::ComputeFullV);
-
     int8_t d = (svd.matrixV() * svd.matrixU()).determinant() > 0 ? 1 : -1;
 
     return std::move(svd.matrixV() * Eigen::DiagonalMatrix<double, 3>(1, 1, d) * svd.matrixU().transpose());
@@ -81,7 +79,7 @@ std::vector<std::pair<Molecule, double>> RMSDTrajectoryProcessor::GetUniques() c
 
     for (const auto p : this->uniques) {
         auto m = p.first;
-        const Eigen::Vector3d mCentroid = m.GetCentroid();
+        const Eigen::Vector3d mCentroid = m.Centroid();
         for (auto a : m.atoms) {
             a.coordinates -= mCentroid;
         }
@@ -97,7 +95,7 @@ void RMSDTrajectoryProcessor::Process(const Trajectory& trajectory, size_t n_job
     tf::Executor e(n_jobs);
 
     Trajectory t = rebalance_trajectory(trajectory);
-    double threshold = this->rmsd_threshold;
+    const double threshold = this->rmsd_threshold;
 
     auto uop = [threshold](const Frame& f)
     {

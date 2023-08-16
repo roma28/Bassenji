@@ -7,23 +7,21 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "Atom.h"
 
 Atom::Atom(const std::string& s)
 {
-    this->set_symbol(s);
+    this->SetSymbol(s);
 }
 
 Atom::Atom(std::string s, double x, double y, double z)
 {
-    this->set_symbol(s);
+    this->SetSymbol(s);
     this->coordinates = {x, y, z};
 }
 
-void Atom::set_symbol(const std::string& s)
+void Atom::SetSymbol(const std::string& s)
 {
     this->atom_symbol = s;
     try {
@@ -36,6 +34,6 @@ void Atom::set_symbol(const std::string& s)
 
 }
 //Atom::Atom(const Atom &a) {
-//  this->set_symbol(a.atom_symbol);
+//  this->SetSymbol(a.atom_symbol);
 //  this->coordinates = a.coordinates;
 //};

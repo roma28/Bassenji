@@ -34,7 +34,7 @@ std::string XYZFileWriter::formatMolecule(const Molecule& m)
 std::string XYZFileWriter::formatAtom(const Atom& a)
 {
     return fmt::format("{0}\t{1:.6f}\t{2:.6f}\t{3:.6f}\n",
-                       a.GetSymbol(),
+                       a.Symbol(),
                        a.coordinates.x(),
                        a.coordinates.y(),
                        a.coordinates.z());

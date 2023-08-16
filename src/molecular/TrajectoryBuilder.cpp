@@ -56,7 +56,7 @@ void TrajectoryBuilder::NewAtom(const std::string& s, double x, double y, double
 void TrajectoryBuilder::SetCurrentAtom(const std::string& s)
 {
     _logger->trace("Setting current atom to {0}", s);
-    trajectory.frames.back().molecules.back().atoms.back().set_symbol(s);
+    trajectory.frames.back().molecules.back().atoms.back().SetSymbol(s);
 }
 
 void TrajectoryBuilder::SetCurrentCoordinate(double c)

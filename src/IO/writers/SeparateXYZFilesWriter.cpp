@@ -19,6 +19,8 @@ void SeparateXYZFilesWriter::WriteFile(const std::vector<std::pair<Molecule, dou
     int i = 0;
     auto populations = std::ofstream(fmt::format(fname, "population"));
     for (const auto& p : ensemble) {
+        populations << fmt::format("{0}\t{1:.4f}", i, p.second);
+
         auto out = std::ofstream(fmt::format(fname, i) + ".xyz");
         out << fmt::format("{}\n", p.first.n_atom());
         out << "\n";
