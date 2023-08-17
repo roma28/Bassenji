@@ -14,11 +14,10 @@
 #include <unordered_map>
 
 #include "Eigen/Core"
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 namespace atom_utilities
 {
-
 const static std::unordered_map<uint8_t, float> number_to_mass =
     {{1, 1.00797}, {2, 4.00260}, {3, 6.941}, {4, 9.01218}, {5, 10.81}, {6, 12.011}, {7, 14.0067}, {8, 15.9994},
      {9, 18.998403}, {10, 20.179}, {11, 22.98977}, {12, 24.305}, {13, 26.98154}, {14, 28.0855}, {15, 30.97376},

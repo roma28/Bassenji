@@ -13,7 +13,12 @@
 
 TrajectoryBuilder::TrajectoryBuilder()
 {
-    _logger = spdlog::stdout_color_st("TrajectoryBuilder");
+    try {
+        _logger = spdlog::stdout_color_st("TrajectoryBuilder");
+    }
+    catch (std::exception& e) {
+        _logger = spdlog::get("TrajectoryBuilder");
+    }
     _logger->debug("Trajectory builder started");
 }
 

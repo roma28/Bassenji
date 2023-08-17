@@ -11,7 +11,17 @@
 #include <gtest/gtest.h>
 #include <molecular/Atom.h>
 
-TEST(AtomTests, ConstructionFromSymbol)
+class AtomTests : public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {};
+
+    void TearDown() override
+    {};
+};
+
+TEST_F(AtomTests, ConstructionFromSymbol)
 {
     for (auto p : atom_utilities::name_to_number) {
         Atom a(p.first);
@@ -20,14 +30,13 @@ TEST(AtomTests, ConstructionFromSymbol)
     }
 }
 
-TEST(AtomTests, ConstructionFromUnsupportedSymbol)
+TEST_F(AtomTests, ConstructionFromUnsupportedSymbol)
 {
     ASSERT_ANY_THROW(Atom a("A"));
     ASSERT_ANY_THROW(Atom a("E"));
 }
 
-
-TEST(AtomTests, ConstructionFromSymbolAndCoordinates)
+TEST_F(AtomTests, ConstructionFromSymbolAndCoordinates)
 {
     for (auto p : atom_utilities::name_to_number) {
         Atom a(p.first, 1, 2, 3);
@@ -39,7 +48,7 @@ TEST(AtomTests, ConstructionFromSymbolAndCoordinates)
     }
 }
 
-TEST(AtomTests, SetSymbol)
+TEST_F(AtomTests, SetSymbol)
 {
     for (auto p : atom_utilities::name_to_number) {
         Atom a;

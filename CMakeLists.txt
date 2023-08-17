@@ -7,5 +7,3 @@ enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(test)
-
-add_test(all_gtests all_tests)

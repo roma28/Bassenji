@@ -7,13 +7,11 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #include "Trajectory.h"
 
 
-size_t Trajectory::n_frames() const
+size_t Trajectory::NFrames() const
 {
     return frames.size();
 }

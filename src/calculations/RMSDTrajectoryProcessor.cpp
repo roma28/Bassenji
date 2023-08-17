@@ -146,7 +146,7 @@ Trajectory RMSDTrajectoryProcessor::rebalance_trajectory(const Trajectory& traje
     std::vector<Molecule> all_molecules;
 
     for (const auto& f : trajectory.frames) {
-        total_molecules += f.n_mol();
+        total_molecules += f.NMol();
         all_molecules.insert(all_molecules.end(), f.molecules.begin(), f.molecules.end());
     }
 

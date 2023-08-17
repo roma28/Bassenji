@@ -11,16 +11,27 @@
 #include <gtest/gtest.h>
 #include <molecular/Molecule.h>
 
-TEST(MoleculeTests, Construction)
+class MoleculeTests : public ::testing::Test
 {
+protected:
     Molecule m;
+
+    void SetUp() override
+    {};
+
+    void TearDown() override
+    {};
+};
+
+
+TEST_F(MoleculeTests, Construction)
+{
     ASSERT_EQ(m.NAtom(), 0);
     ASSERT_ANY_THROW(m.Centroid());
 }
 
-TEST(MoleculeTests, Atoms)
+TEST_F(MoleculeTests, Atoms)
 {
-    Molecule m;
     m.atoms.emplace_back("C");
     m.atoms.emplace_back("H");
 
@@ -29,9 +40,8 @@ TEST(MoleculeTests, Atoms)
     ASSERT_EQ(m.atoms[1].Symbol(), "H");
 }
 
-TEST(MoleculeTests, Centroid)
+TEST_F(MoleculeTests, Centroid)
 {
-    Molecule m;
     m.atoms.emplace_back("C", 1.0, 2.0, 3.0);
     m.atoms.emplace_back("C", 3.0, 4.0, 5.0);
     m.UpdateCentroid();

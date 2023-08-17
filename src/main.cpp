@@ -26,20 +26,13 @@ cxxopts::ParseResult parse_arguments(int argc, char* const argv[])
 {
     cxxopts::Options opt("Bassenji", "A MD-based conformer generator");
     opt.allow_unrecognised_options();
-    opt.add_options()("i,input", "Input file", cxxopts::value<std::string>())("o,output",
-                                                                              "Output file",
-                                                                              cxxopts::value<std::string>())("v,verbose",
-                                                                                                             "Logging level",
-                                                                                                             cxxopts::value<
-                                                                                                                 int>()
-                                                                                                                 ->default_value(
-                                                                                                                     "2"))(
-        "trace-parsing",
-        "trace-parsing",
-        cxxopts::value<bool>())("r,rmsd", "RMSD threshold", cxxopts::value<double>())("j,jobs",
-                                                                                      "Number of parallel threads",
-                                                                                      cxxopts::value<int>()
-                                                                                          ->default_value("1"));
+    opt.add_options()
+           ("i,input", "Input file", cxxopts::value<std::string>())
+           ("o,output", "Output file", cxxopts::value<std::string>())
+           ("v,verbose", "Logging level", cxxopts::value<int>()->default_value("2"))
+           ("trace-parsing", "trace-parsing", cxxopts::value<bool>())
+           ("r,rmsd", "RMSD threshold", cxxopts::value<double>())
+           ("j,jobs", "Number of parallel threads", cxxopts::value<int>()->default_value("1"));
 
     cxxopts::ParseResult options = opt.parse(argc, argv);
 

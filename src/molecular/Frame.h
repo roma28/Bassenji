@@ -7,8 +7,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-//
-//
 
 #ifndef BASSENJI_SRC_MOLECULAR_FRAME_H_
 #define BASSENJI_SRC_MOLECULAR_FRAME_H_
@@ -24,7 +22,7 @@ public:
     Frame() = default;
     ~Frame() = default;
 
-    int n_mol() const
+    int NMol() const
     { return molecules.size(); };
 };
 
