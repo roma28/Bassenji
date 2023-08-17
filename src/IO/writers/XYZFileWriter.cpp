@@ -16,7 +16,7 @@ void XYZFileWriter::WriteFile(const std::vector<std::pair<Molecule, double>>& en
 {
     auto out = std::ofstream(fname);
     for (const auto& c : ensemble) {
-        out << fmt::format("{}\n", c.first.n_atom());
+        out << fmt::format("{}\n", c.first.NAtom());
         out << fmt::format("{:.4f}\n", c.second);
         out << formatMolecule(c.first);
     }

@@ -22,7 +22,7 @@ void SeparateXYZFilesWriter::WriteFile(const std::vector<std::pair<Molecule, dou
         populations << fmt::format("{0}\t{1:.4f}", i, p.second);
 
         auto out = std::ofstream(fmt::format(fname, i) + ".xyz");
-        out << fmt::format("{}\n", p.first.n_atom());
+        out << fmt::format("{}\n", p.first.NAtom());
         out << "\n";
         out << XYZFileWriter::formatMolecule(p.first);
         ++i;

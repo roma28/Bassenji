@@ -30,7 +30,7 @@ public:
 
     Eigen::Vector3d Centroid() const;
 
-    int n_atom() const
+    size_t NAtom() const
     { return atoms.size(); }
 
 };

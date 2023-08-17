@@ -60,7 +60,6 @@ const static std::unordered_map<std::string, uint8_t> name_to_number =
 
 class Atom
 {
-
     uint8_t atom_number;
     float atom_mass;
     std::string atom_symbol;

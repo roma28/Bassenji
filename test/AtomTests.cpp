@@ -20,6 +20,13 @@ TEST(AtomTests, ConstructionFromSymbol)
     }
 }
 
+TEST(AtomTests, ConstructionFromUnsupportedSymbol)
+{
+    ASSERT_ANY_THROW(Atom a("A"));
+    ASSERT_ANY_THROW(Atom a("E"));
+}
+
+
 TEST(AtomTests, ConstructionFromSymbolAndCoordinates)
 {
     for (auto p : atom_utilities::name_to_number) {
@@ -42,8 +49,3 @@ TEST(AtomTests, SetSymbol)
     }
 }
 
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

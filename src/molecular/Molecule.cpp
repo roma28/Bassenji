@@ -12,9 +12,9 @@
 
 void Molecule::UpdateCentroid()
 {
-    Eigen::Matrix<double, Eigen::Dynamic, 3> m(n_atom(), 3);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> m(NAtom(), 3);
     double total_mass = 0;
-    for (size_t i = 0; i < n_atom(); ++i) {
+    for (size_t i = 0; i < NAtom(); ++i) {
         m.row(i) = atoms[i].coordinates * atoms[i].Mass();
         total_mass += atoms[i].Mass();
     }

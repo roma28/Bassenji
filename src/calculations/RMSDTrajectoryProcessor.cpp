@@ -33,19 +33,19 @@ RMSDTrajectoryProcessor::RMSDTrajectoryProcessor(double threshold)
 
 double RMSDTrajectoryProcessor::rmsd(const Molecule& A, const Molecule& B)
 {
-    if (A.n_atom() != B.n_atom()) {
+    if (A.NAtom() != B.NAtom()) {
         throw std::runtime_error(fmt::format("The number of atoms in molecules is not equal: {0} and {1}",
-                                             A.n_atom(),
-                                             B.n_atom()));
+                                             A.NAtom(),
+                                             B.NAtom()));
     }
 
-    Eigen::MatrixX3d P(A.n_atom(), 3);
-    Eigen::MatrixX3d Q(B.n_atom(), 3);
+    Eigen::MatrixX3d P(A.NAtom(), 3);
+    Eigen::MatrixX3d Q(B.NAtom(), 3);
 
     const Eigen::Vector3d centroidA = A.Centroid();
     const Eigen::Vector3d centroidB = B.Centroid();
 
-    for (size_t i = 0; i < A.n_atom(); ++i) {
+    for (size_t i = 0; i < A.NAtom(); ++i) {
         P.row(i) = A.atoms[i].coordinates - centroidA;
         Q.row(i) = B.atoms[i].coordinates - centroidB;
     }
